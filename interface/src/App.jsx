@@ -1,10 +1,10 @@
 import './index.css'
+import Navbar from './components/Navbar';   //import Navbar
 
 function App() {
   return (
     <>
-    <h1 className="text-2xl bg-amber-600 text-center">Hello</h1>
-     
+    <Navbar/>  {/*connect Navbar */} 
     </>
   )
 }
