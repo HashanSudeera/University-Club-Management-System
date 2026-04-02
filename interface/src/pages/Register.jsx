@@ -1,6 +1,10 @@
 import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
+
 
 function Register() {
+  const navigate = useNavigate();
   // SINGLE STATE (BEST PRACTICE)
   const [formData, setFormData] = useState({
     firstName: "",
@@ -9,9 +13,11 @@ function Register() {
     email: "",
     password: "",
     confirmPassword: "",
-    year: "",
-    role: "member", 
+    academicYear: "",
+    role: "Club Member",
   });
+
+  const [error, setError] = useState(null);
 
   // HANDLE INPUT CHANGE
   const handleChange = (e) => {
@@ -30,15 +36,24 @@ function Register() {
   };
 
   // HANDLE SUBMIT
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
+    console.log(formData);
+    try {
+      await axios.post("http://localhost:4000/api/auth/register", formData, {
+        withCredentials: true,
+      });
+      navigate("/login");
+    } catch (err) {
+      // 2. Robust error checking for Axios
+      if (err.response && err.response.data && err.response.data.error) {
+        setError(err.response.data.error);
+      } else if (err.message) {
+        setError(err.message); // Captures network errors (e.g., server down)
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
     }
-
-    console.log("Form Data:", formData);
   };
 
   return (
@@ -69,24 +84,22 @@ function Register() {
           <div className="flex mb-6 bg-gray-300 rounded-full p-1">
             <button
               type="button"
-              onClick={() => handleRoleChange("member")}
-              className={`w-1/2 py-2 rounded-full transition ${
-                formData.role === "member"
-                  ? "bg-[#021129]  text-white"
-                  : "text-gray-700"
-              }`}
+              onClick={() => handleRoleChange("Club Member")}
+              className={`w-1/2 py-2 rounded-full transition ${formData.role === "Club Member"
+                ? "bg-[#021129]  text-white"
+                : "text-gray-700"
+                }`}
             >
               Club Member
             </button>
 
             <button
               type="button"
-              onClick={() => handleRoleChange("admin")}
-              className={`w-1/2 py-2 rounded-full transition ${
-                formData.role === "admin"
-                  ? "bg-[#021129]  text-white"
-                  : "text-gray-700"
-              }`}
+              onClick={() => handleRoleChange("Club Admin")}
+              className={`w-1/2 py-2 rounded-full transition ${formData.role === "Club Admin"
+                ? "bg-[#021129]  text-white"
+                : "text-gray-700"
+                }`}
             >
               Club Admin
             </button>
@@ -155,16 +168,16 @@ function Register() {
             />
 
             <select
-              name="year"
-              value={formData.year}
+              name="academicYear"
+              value={formData.academicYear}
               onChange={handleChange}
               className="input"
             >
               <option value="">Select Year</option>
-              <option>Year 1</option>
-              <option>Year 2</option>
-              <option>Year 3</option>
-              <option>Year 4</option>
+              <option>1st Year</option>
+              <option>2nd Year</option>
+              <option>3rd Year</option>
+              <option>4th Year</option>
             </select>
 
             <button className="w-full bg-[#021129] n text-white py-2 rounded-lg hover:bg-blue-800 transition">
@@ -174,8 +187,15 @@ function Register() {
 
           <p className="text-center text-sm mt-4">
             Already have an account?{" "}
-            <span className="text-yellow-500 cursor-pointer">Login</span>
+            <Link to="/login" className="text-yellow-500 cursor-pointer hover:underline">Login</Link>
           </p>
+          {/* Error Display */}
+          {error && (
+            <div className="bg-red-300 w-[350px] border-red-500 border-2 rounded-2xl p-2 backdrop-blur-md text-[15px] font-bold text-center">
+              {error}
+            </div>
+          )}
+
         </div>
       </div>
     </div>

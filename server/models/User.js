@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema(
     academicYear: {
       type: String,
       required: true,
-      enum: ['1st Year', '2nd Year', '3rd Year', '4th Year', 'Graduate']
+      enum: ['1st Year', '2nd Year', '3rd Year', '4th Year']
     }
   },
   { timestamps: true }

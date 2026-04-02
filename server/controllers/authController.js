@@ -8,17 +8,21 @@ import { REFRESH_TOKEN_SECRET, ACCESS_TOKEN_SECRET} from "../config.js";
 //register user
 const register = async (req, res) => {
   try {
-    const { firstName,lastName ,address, email, password, role ,academicYear} = req.body;
+    const { firstName,lastName ,address, email, password,confirmPassword, role ,academicYear} = req.body;
 
     // 1. All validation moved INSIDE the try block
-    if (!firstName || !email || !password || !lastName || !address || !academicYear ) {
-      throw Error("All fields are required");
+    if (!firstName || !email || !password || !lastName || !address || !academicYear || !confirmPassword ) {
+      throw Error("All fields are required ");
     }
     if (!validator.isEmail(email)) {
       throw Error('Email is not valid');
     }
     if (!validator.isStrongPassword(password)) {
       throw Error('Password not strong enough');
+    }
+
+    if (!password == confirmPassword){
+      throw Error('Password not Matched');
     }
 
     const existingUser = await User.findOne({ email });
@@ -170,4 +174,17 @@ const logout = (req, res) => {
   }
 };
 
-export {register,login,refreshToken,logout};
+const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export {register,login,refreshToken,logout,getProfile};

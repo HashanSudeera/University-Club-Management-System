@@ -1,6 +1,19 @@
 import logoImg from '../assets/Logo.png';
-
+import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 const Navbar = () => {
+    const { auth, setAuth } = useAuth(); 
+
+    const handleLogout = async () => {
+        try {
+            await axios.post("http://localhost:4000/api/auth/logout", {}, { withCredentials: true });
+            setAuth(null); // This is why we still need useAuth
+            navigate("/login");
+        } catch (error) {
+            console.error("Logout failed", error);
+        }
+    };
+
     return (
         <header className="font-sora flex items-center justify-between px-11 w-full h-15 rounded-b-lg bg-[#021129] shadow-2xl">
 
@@ -23,10 +36,10 @@ const Navbar = () => {
                         </svg>
                     </div>
 
-                    <h1 className="text-white/60 font-bold">Maleesha Kalhara</h1>
+                    <h1 className="text-white/60 font-bold"></h1>
                 </div>
                 <div className='flex items-center'>
-                    <button className="hover:scale-105 transition-colors hover:bg-blue-800 absolute right-5.5 bg-blue-900 rounded-lg text-white/85 hover:cursor-pointer p-2">
+                    <button onClick={handleLogout} className="hover:scale-105 transition-colors hover:bg-blue-800 absolute right-5.5 bg-blue-900 rounded-lg text-white/85 hover:cursor-pointer p-2">
                         Logout
                     </button>
                 </div>
