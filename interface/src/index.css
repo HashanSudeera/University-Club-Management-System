@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
+@import "tailwindcss";
+
+@theme{
+  --font-sora:"Sora", sans-serif;
+}
+
+.input {
+  @apply w-full border-b border-gray-300 focus:outline-none focus:border-blue-900 py-2 bg-transparent;
+}
