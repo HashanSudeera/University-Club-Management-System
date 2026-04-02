@@ -1,12 +1,16 @@
 import './index.css'
+import Register from "./pages/Register";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <>
-    <h1 className="text-2xl bg-amber-600 text-center">Hello</h1>
-     
-    </>
-  )
+    <Router>
+      <Routes>
+        {/* This is your Root Route */}
+        <Route path="/register" element={<Register />} /> 
+      </Routes>
+    </Router>
+  );
 }
 
 export default App
