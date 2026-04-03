@@ -1,17 +1,17 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import validator from 'validator'; 
-import { REFRESH_TOKEN_SECRET, ACCESS_TOKEN_SECRET} from "../config.js";
+import validator from 'validator';
+import { REFRESH_TOKEN_SECRET, ACCESS_TOKEN_SECRET } from "../config.js";
 
 
 //register user
 const register = async (req, res) => {
   try {
-    const { firstName,lastName ,address, email, password,confirmPassword, role ,academicYear} = req.body;
+    const { firstName, lastName, address, email, password, confirmPassword, role, academicYear } = req.body;
 
     // 1. All validation moved INSIDE the try block
-    if (!firstName || !email || !password || !lastName || !address || !academicYear || !confirmPassword ) {
+    if (!firstName || !email || !password || !lastName || !address || !academicYear || !confirmPassword) {
       throw Error("All fields are required ");
     }
     if (!validator.isEmail(email)) {
@@ -21,8 +21,8 @@ const register = async (req, res) => {
       throw Error('Password not strong enough');
     }
 
-    if (!password == confirmPassword){
-      throw Error('Password not Matched');
+    if (password !== confirmPassword) {
+      throw Error('Passwords do not match');
     }
 
     const existingUser = await User.findOne({ email });
@@ -42,9 +42,9 @@ const register = async (req, res) => {
       role,
       academicYear
     });
-    
+
     await user.save();
-    
+
     res.status(201).json({
       message: "User registered successfully",
       user: {
@@ -101,7 +101,7 @@ const login = async (req, res) => {
       sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
-//send access token and user data to frontend
+    //send access token and user data to frontend
     res.status(200).json({
       accessToken,
       user: {
@@ -187,4 +187,4 @@ const getProfile = async (req, res) => {
   }
 };
 
-export {register,login,refreshToken,logout,getProfile};
+export { register, login, refreshToken, logout, getProfile };
