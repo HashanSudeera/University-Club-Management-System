@@ -1,10 +1,82 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
 @import "tailwindcss";
 
-@theme{
-  --font-sora:"Sora", sans-serif;
+@theme {
+  /* Set Sora as the default sans-serif font */
+  --font-sans: "Sora", sans-serif;
+
+  /* Typography: Sizes and Line Heights (120% = 1.2) */
+  --text-h1: 60px;
+  --text-h1--line-height: 1.2;
+  
+  --text-h2: 46px;
+  --text-h2--line-height: 1.2;
+  
+  --text-h3: 35px;
+  --text-h3--line-height: 1.2;
+  
+  --text-h4: 27px;
+  --text-h4--line-height: 1.2;
+  
+  --text-h5: 21px;
+  --text-h5--line-height: 1.2;
+  
+  --text-large-body: 16px;
+  --text-large-body--line-height: 1.2;
+  
+  --text-regular-body: 12px;
+  --text-regular-body--line-height: 1.2;
+  
+  --text-caption: 9px;
+  --text-caption--line-height: 1.2;
+
+  /* Brand Colors: Blue */
+  --color-blue-50: #e6e8ec;
+  --color-blue-100: #b0b9c3;
+  --color-blue-200: #8a97a7;
+  --color-blue-300: #55687e;
+  --color-blue-400: #344a65;
+  --color-blue-500: #011d3f;
+  --color-blue-600: #011a39;
+  --color-blue-700: #01152d;
+  --color-blue-800: #011023;
+  --color-blue-900: #000c1a;
+
+  /* Brand Colors: Yellow */
+  --color-yellow-50: #fffcf5;
+  --color-yellow-100: #fff5df;
+  --color-yellow-200: #fff0d0;
+  --color-yellow-300: #ffeabb;
+  --color-yellow-400: #ffe5ad;
+  --color-yellow-500: #ffdf99;
+  --color-yellow-600: #e8cb8b;
+  --color-yellow-700: #b59e6d;
+  --color-yellow-800: #8c7b54;
+  --color-yellow-900: #6b5e40;
+
+  /* Brand Colors: Grey */
+  --color-grey-50: #e8e8e8;
+  --color-grey-100: #b6b6b6;
+  --color-grey-200: #939393;
+  --color-grey-300: #626262;
+  --color-grey-400: #434343;
+  --color-grey-500: #141414;
+  --color-grey-600: #121212;
+  --color-grey-700: #0e0e0e;
+  --color-grey-800: #0b0b0b;
+  --color-grey-900: #080808;
+
+  /* Semantic Colors */
+  --color-error: #ee3131;
+  --color-success: #28e234;
+  --color-success-muted: #d9d9d9;
+  --color-warning: #f08a30;
+  --color-info: #415aff;
 }
 
-.input {
-  @apply w-full border-b border-gray-300 focus:outline-none focus:border-blue-900 py-2 bg-transparent;
+@layer components {
+  .input {
+    /* Notice: Changed border-gray-300 to border-grey-300 to use your specific token */
+    @apply w-full border-b border-grey-300 focus:outline-none focus:border-blue-900 py-2 bg-transparent text-large-body;
+  }
 }
