@@ -10,6 +10,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import ClubPage from './pages/ClubPage';
 import Announcement from './pages/Announcement';
+import AboutUs from "./pages/AboutUs/AboutUs";
 
 function App() {
   return (
@@ -51,6 +52,10 @@ function App() {
                 }
               </PrivateRoute>
             }
+          />
+          <Route 
+            path="/AboutUs" 
+            element={<AboutUs />} 
           />
         </Routes>
       </AuthProvider>
