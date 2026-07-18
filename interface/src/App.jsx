@@ -11,6 +11,8 @@ import PublicRoute from "./components/PublicRoute";
 import Test from "./pages/clubMember/test";
 import UniversityAdminDashboard from "./pages/universityAdmin/UniversityAdminDashboard";
 import ClubExplore from "./pages/ClubExplore";
+import ClubPage from './pages/ClubPage';
+import Announcement from './pages/Announcement';
 import AboutUs from "./pages/AboutUs/AboutUs";
 
 function App() {
@@ -34,10 +36,15 @@ function App() {
               </PublicRoute>
             }
           />
+          <Route path="/club" element={<ClubPage />} />
+          <Route path="/announcement" element={<Announcement />}/>  
           <Route
             path="/"
             element={
               <PrivateRoute>
+           
+            
+               
                 {(auth) =>
                   console.log(auth) ||
                   (auth.role === "Uni Admin" ? (
