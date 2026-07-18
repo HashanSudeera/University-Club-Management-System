@@ -9,12 +9,18 @@ import ClubMamberDashboard from "./pages/clubMember/clubMemberDashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import AboutUs from "./pages/AboutUs/AboutUs";
+import UserProfile from "./pages/userProfile";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+
+          {/* does not work */}
+            <Route path="/userprofile" element={<UserProfile/>}></Route>
+            {/* ---------------------- */}
+
           <Route
             path="/login"
             element={
@@ -31,6 +37,7 @@ function App() {
               </PublicRoute>
             }
           />
+        
           <Route
             path="/"
             element={
@@ -50,6 +57,7 @@ function App() {
             path="/AboutUs" 
             element={<AboutUs />} 
           />
+          
         </Routes>
       </AuthProvider>
     </BrowserRouter>
