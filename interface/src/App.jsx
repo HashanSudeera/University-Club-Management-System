@@ -8,6 +8,7 @@ import ClubAdminDashboard from "./pages/clubAdmin/clubAdminDashboard";
 import ClubMamberDashboard from "./pages/clubMember/clubMemberDashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
+import AboutUs from "./pages/AboutUs/AboutUs";
 
 function App() {
   return (
@@ -44,6 +45,10 @@ function App() {
                 }
               </PrivateRoute>
             }
+          />
+          <Route 
+            path="/AboutUs" 
+            element={<AboutUs />} 
           />
         </Routes>
       </AuthProvider>
