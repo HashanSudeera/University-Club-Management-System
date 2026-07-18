@@ -9,6 +9,7 @@ import ClubMamberDashboard from "./pages/clubMember/clubMemberDashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import AboutUs from "./pages/AboutUs/AboutUs";
+import ClubRegister from './pages/clubRegister/clubRegister';
 
 function App() {
   return (
@@ -49,6 +50,10 @@ function App() {
           <Route 
             path="/AboutUs" 
             element={<AboutUs />} 
+          />
+          <Route 
+            path="/clubRegister" 
+            element={<ClubRegister />} 
           />
         </Routes>
       </AuthProvider>
