@@ -51,7 +51,7 @@ const SideNavbar = () => {
       <nav className="flex flex-row md:flex-col w-full h-full md:h-auto md:gap-1">
         
         {/* LINK 1: Dashboard (Routes to root "/") */}
-        <NavLink to="/" className={getLinkClassName} end>
+        <NavLink to="/dashboard" className={getLinkClassName} end>
           <LayoutDashboard size={20} className="shrink-0" />
           <span className={`text-[10px] md:text-large-body whitespace-nowrap ${!isSidebarOpen && 'md:hidden'}`}>
             Dashboard
