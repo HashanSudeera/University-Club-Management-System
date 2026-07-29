@@ -4,11 +4,17 @@ import "./index.css";
 //pages
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import ClubAdminDashboard from "./pages/clubAdmin/clubAdminDashboard";
-import ClubMamberDashboard from "./pages/clubMember/clubMemberDashboard";
+import ClubAdminDashboard from "./pages/clubAdmin/ClubAdminDashboard";
+import ClubMamberDashboard from "./pages/clubMember/ClubMemberDashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import Home from "./pages/Home";
+import Test from "./pages/clubMember/test";
+import UniversityAdminDashboard from "./pages/universityAdmin/UniversityAdminDashboard";
+import ClubExplore from "./pages/ClubExplore";
+import ClubPage from './pages/ClubPage';
+import Announcement from './pages/Announcement';
+import AboutUs from "./pages/AboutUs/AboutUs";
 
 function App() {
   return (
@@ -33,13 +39,20 @@ function App() {
               </PublicRoute>
             }
           />
+          <Route path="/club" element={<ClubPage />} />
+          <Route path="/announcement" element={<Announcement />}/>  
           <Route
             path="/"
             element={
               <PrivateRoute>
+           
+            
+               
                 {(auth) =>
                   console.log(auth) ||
-                  (auth.role === "Club Admin" ? (
+                  (auth.role === "Uni Admin" ? (
+                    <UniversityAdminDashboard />
+                  ) : auth.role === "Club Admin" ? (
                     <ClubAdminDashboard />
                   ) : (
                     <ClubMamberDashboard />
@@ -47,6 +60,25 @@ function App() {
                 }
               </PrivateRoute>
             }
+          />
+          <Route
+            path="/test"
+            element={
+              <PrivateRoute>
+                <Test />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/explore"
+            element={
+              <PrivateRoute>
+                <ClubExplore />
+              </PrivateRoute>
+            }
+          <Route 
+            path="/AboutUs" 
+            element={<AboutUs />} 
           />
         </Routes>
       </AuthProvider>

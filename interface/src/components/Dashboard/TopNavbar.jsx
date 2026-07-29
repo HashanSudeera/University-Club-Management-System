@@ -1,37 +1,54 @@
 import React from 'react';
-import { Bell } from 'lucide-react';
+import { Bell, Menu } from 'lucide-react'; // 1. Imported Menu (3 bars icon)
 import Logo from "../../assets/clublink.svg";
 
-const TopNavbar = () => {
+// Added onMenuToggle prop in case you want to trigger the mobile sidebar!
+const TopNavbar = ({ onMenuToggle }) => {
   return (
-    <header className="h-[72px] bg-blue-900 text-white flex items-center justify-between px-6 shrink-0">
-      <div className="flex items-center gap-3">
-        {/* Logo */}
-        <img src={Logo} alt='logo here' className='w-9'/>
+    <header className="h-[64px] md:h-[72px] bg-blue-900 text-white flex items-center justify-between px-4 md:px-6 shrink-0 relative z-30 shadow-md">
+      
+      {/* LEFT / CENTER: Logo & Brand Name 
+          - On mobile: Centered perfectly using absolute left-1/2 -translate-x-1/2
+          - On desktop (md:): Resets to normal left-aligned static position 
+      */}
+      <div className="flex items-center gap-2 md:gap-3 absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0">
+        <img src={Logo} alt='Logo' className='w-7 md:w-9 shrink-0' />
         <div>
-          <h1 className="text-yellow-500 text-[25px] leading-tight font-bold">Club Link</h1>
-          <p className="text-[10px] text-blue-100">University Club Management System</p>
+          <h1 className="text-yellow-500 text-[20px] md:text-[25px] leading-tight font-bold whitespace-nowrap">
+            Club Link
+          </h1>
+          {/* Hides the long subtitle on very small screens so it doesn't break */}
+          <p className="text-[9px] md:text-[10px] text-blue-100 hidden sm:block leading-none mt-0.5">
+            University Club Management System
+          </p>
         </div>
       </div>
 
-      <div className="flex items-center gap-6">
+      {/* RIGHT: Notifications, Profile Badge & 3 Bars Menu */}
+      <div className="flex items-center gap-3 md:gap-6 ml-auto">
+        
+        {/* Notification Bell (Visible on both mobile & desktop) */}
         <button className="relative p-2 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
-          <Bell size={20} />
+          <Bell size={18} className="md:w-5 md:h-5" />
           <span className="absolute top-1 right-1.5 w-2 h-2 bg-error rounded-full"></span>
         </button>
         
-        <div className="flex items-center gap-3">
+        {/* PROFILE BADGE: Hidden on mobile ('hidden'), visible on tablet/desktop ('md:flex') */}
+        <div className="hidden md:flex items-center gap-3 pl-2 border-l border-blue-800/80">
           <div className="text-right">
             <p className="font-bold text-large-body leading-tight">Name</p>
             <p className="text-regular-body text-blue-200">Club member</p>
           </div>
-          <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-500">
+          <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 shadow-inner">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
               <circle cx="12" cy="7" r="4" />
             </svg>
           </div>
         </div>
+
+        
+
       </div>
     </header>
   );
