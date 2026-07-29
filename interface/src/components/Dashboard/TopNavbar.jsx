@@ -1,6 +1,8 @@
 import React from 'react';
 import { Bell, Menu } from 'lucide-react'; // 1. Imported Menu (3 bars icon)
-import Logo from "../../assets/clublink.svg";
+import Logo from "/clublink.svg";
+
+import { useNavigate, Link } from "react-router-dom"; 
 
 // Added onMenuToggle prop in case you want to trigger the mobile sidebar!
 const TopNavbar = ({ onMenuToggle }) => {
@@ -11,6 +13,7 @@ const TopNavbar = ({ onMenuToggle }) => {
           - On mobile: Centered perfectly using absolute left-1/2 -translate-x-1/2
           - On desktop (md:): Resets to normal left-aligned static position 
       */}
+      <Link to="/">
       <div className="flex items-center gap-2 md:gap-3 absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0">
         <img src={Logo} alt='Logo' className='w-7 md:w-9 shrink-0' />
         <div>
@@ -23,6 +26,7 @@ const TopNavbar = ({ onMenuToggle }) => {
           </p>
         </div>
       </div>
+      </Link>
 
       {/* RIGHT: Notifications, Profile Badge & 3 Bars Menu */}
       <div className="flex items-center gap-3 md:gap-6 ml-auto">

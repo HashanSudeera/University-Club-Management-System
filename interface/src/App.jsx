@@ -45,14 +45,14 @@ function App() {
             }
           />
           <Route path="/club" element={<ClubPage />} />
-          <Route path="/announcement" element={<Announcement />}/>  
+          <Route path="/announcements" element={<Announcement />} />
           <Route
-            path="/"
+            path="/dashboard"
             element={
               <PrivateRoute>
-           
-            
-               
+
+
+
                 {(auth) =>
                   console.log(auth) ||
                   (auth.role === "Uni Admin" ? (
@@ -81,10 +81,10 @@ function App() {
                 <ClubExplore />
               </PrivateRoute>
             }
-            />
-          <Route 
-            path="/AboutUs" 
-            element={<AboutUs />} 
+          />
+          <Route
+            path="/AboutUs"
+            element={<AboutUs />}
           />
           
         </Routes>
