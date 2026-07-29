@@ -15,12 +15,17 @@ import ClubExplore from "./pages/ClubExplore";
 import ClubPage from './pages/ClubPage';
 import Announcement from './pages/Announcement';
 import AboutUs from "./pages/AboutUs/AboutUs";
+import UserProfile from "./pages/userProfile";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+
+          {/* does not work */}
+            <Route path="/userprofile" element={<UserProfile/>}></Route>
+            {/* ---------------------- */}
           <Route path="/" element={<Home />} />
 
           <Route
@@ -81,6 +86,7 @@ function App() {
             path="/AboutUs" 
             element={<AboutUs />} 
           />
+          
         </Routes>
       </AuthProvider>
     </BrowserRouter>
