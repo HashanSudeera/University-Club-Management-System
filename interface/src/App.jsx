@@ -76,6 +76,7 @@ function App() {
                 <ClubExplore />
               </PrivateRoute>
             }
+            />
           <Route 
             path="/AboutUs" 
             element={<AboutUs />} 
