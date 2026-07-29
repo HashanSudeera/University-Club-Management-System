@@ -59,6 +59,7 @@ const Navbar = () => {
                 {auth ? (
                     // ----------- WHAT TO SHOW WHEN LOGGED IN -----------
                     <div className="flex items-center gap-6">
+                        <Link to="/userprofile">
                         <div className='flex items-center gap-2'>
                             {/* Profile Icon */}
                             <div className="relative w-6.5 h-6.5 overflow-hidden bg-blue-100 rounded-full border-2 border-white/30 flex-shrink-0">
@@ -69,6 +70,7 @@ const Navbar = () => {
                             {/* Optional: Display user's name if it exists in your auth context */}
                             <h1 className="text-white/60 font-bold">{auth?.name || "Profile"}</h1>
                         </div>
+                        </Link>
                         
                         <button 
                             onClick={handleLogout} 
