@@ -68,7 +68,7 @@ const SideNavbar = () => {
         </NavLink>
         
         {/* LINK 3: Events Calendar (Add your route like to="/calendar" later) */}
-        <NavLink to="/calendar" className={getLinkClassName}>
+        <NavLink to="/eventcalendar" className={getLinkClassName}>
           <CalendarDays size={20} className="shrink-0" />
           <span className={`text-[10px] md:text-large-body whitespace-nowrap ${!isSidebarOpen && 'md:hidden'}`}>
             <span className="md:hidden">Calendar</span>
