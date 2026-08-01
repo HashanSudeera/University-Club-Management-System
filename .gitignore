@@ -21,4 +21,6 @@ lerna-debug.log*
 *.sw?
 
 
+*.env
+
 node_modules/
