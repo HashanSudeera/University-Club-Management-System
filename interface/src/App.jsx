@@ -16,6 +16,7 @@ import ClubPage from './pages/ClubPage';
 import Announcement from './pages/Announcement';
 import AboutUs from "./pages/AboutUs/AboutUs";
 import UserProfile from "./pages/userProfile";
+import EventCalendar from "./pages/EventCalendar";
 
 function App() {
   return (
@@ -23,9 +24,7 @@ function App() {
       <AuthProvider>
         <Routes>
 
-          {/* does not work */}
-            <Route path="/userprofile" element={<UserProfile/>}></Route>
-            {/* ---------------------- */}
+          <Route path="/userprofile" element={<UserProfile />}></Route>
           <Route path="/" element={<Home />} />
 
           <Route
@@ -44,8 +43,30 @@ function App() {
               </PublicRoute>
             }
           />
-          <Route path="/club" element={<ClubPage />} />
-          <Route path="/announcements" element={<Announcement />} />
+
+          <Route 
+            path="/club"
+            element={
+              <PrivateRoute>
+                  <ClubPage />
+              </PrivateRoute>} 
+          />
+          <Route
+            path="/announcements"
+            element={
+              <PrivateRoute>
+                <Announcement />
+              </PrivateRoute>
+            } 
+          />
+          <Route
+            path="/eventcalendar"
+            element={
+              <PrivateRoute>
+                <EventCalendar />
+              </PrivateRoute>
+            } 
+          />
           <Route
             path="/dashboard"
             element={
@@ -86,7 +107,7 @@ function App() {
             path="/AboutUs"
             element={<AboutUs />}
           />
-          
+
         </Routes>
       </AuthProvider>
     </BrowserRouter>
