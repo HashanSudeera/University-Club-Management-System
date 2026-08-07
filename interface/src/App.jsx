@@ -12,18 +12,18 @@ import Home from "./pages/Home";
 import Test from "./pages/clubMember/test";
 import UniversityAdminDashboard from "./pages/universityAdmin/UniversityAdminDashboard";
 import ClubExplore from "./pages/ClubExplore";
-import ClubPage from './pages/ClubPage';
-import Announcement from './pages/Announcement';
+import ClubPage from "./pages/ClubPage";
+import Announcement from "./pages/Announcement";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import UserProfile from "./pages/userProfile";
 import EventCalendar from "./pages/EventCalendar";
+import CreateEvent from "./pages/CreateEvent";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-
           <Route path="/userprofile" element={<UserProfile />}></Route>
           <Route path="/" element={<Home />} />
 
@@ -44,12 +44,13 @@ function App() {
             }
           />
 
-          <Route 
+          <Route
             path="/club"
             element={
               <PrivateRoute>
-                  <ClubPage />
-              </PrivateRoute>} 
+                <ClubPage />
+              </PrivateRoute>
+            }
           />
           <Route
             path="/announcements"
@@ -57,7 +58,7 @@ function App() {
               <PrivateRoute>
                 <Announcement />
               </PrivateRoute>
-            } 
+            }
           />
           <Route
             path="/eventcalendar"
@@ -65,15 +66,21 @@ function App() {
               <PrivateRoute>
                 <EventCalendar />
               </PrivateRoute>
-            } 
+            }
+          />
+
+          <Route
+            path="/AddEvent"
+            element={
+              <PrivateRoute>
+                <CreateEvent />
+              </PrivateRoute>
+            }
           />
           <Route
             path="/dashboard"
             element={
               <PrivateRoute>
-
-
-
                 {(auth) =>
                   console.log(auth) ||
                   (auth.role === "Uni Admin" ? (
@@ -103,11 +110,7 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route
-            path="/AboutUs"
-            element={<AboutUs />}
-          />
-
+          <Route path="/AboutUs" element={<AboutUs />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
