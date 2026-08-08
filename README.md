@@ -1,0 +1,9 @@
+## Club member
+Email : cm@gmail.com
+Password : Cm12345#
+## Club admin
+Email : ca@gmail.com
+Password : Ca12345#
+## Uni admin
+Email : ua@gmail.com
+Password : Ua12345#

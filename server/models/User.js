@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['Club Member', 'Club Admin'],
+      enum: ['Club Member', 'Club Admin','Uni Admin'],
       default: 'Club Member',
       required: true
     },

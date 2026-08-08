@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import loginBg from '../assets/login.jpg';
 import { useAuth } from "../context/AuthContext";
-import { useNavigate , Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-
-
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // State for the toggle
+  const [showPassword, setShowPassword] = useState(false);
 
   const { setAuth } = useAuth();
   const navigate = useNavigate();
@@ -26,16 +24,14 @@ const Login = () => {
         withCredentials: true,
       });
 
-      // setAuth({ accessToken: res.data.accessToken, role: res.user.role }); was incorrect
       setAuth({ accessToken: res.data.accessToken, role: res.data.user.role });
       console.log(res.data);
-      navigate("/"); // Redirect to home after successful login
+      navigate("/");
     } catch (err) {
-      // 2. Robust error checking for Axios
       if (err.response && err.response.data && err.response.data.error) {
         setError(err.response.data.error);
       } else if (err.message) {
-        setError(err.message); // Captures network errors (e.g., server down)
+        setError(err.message);
       } else {
         setError("Something went wrong. Please try again.");
       }
@@ -44,7 +40,6 @@ const Login = () => {
 
   return (
     <div className="flex h-screen w-full overflow-hidden font-sora">
-      {/* Left Section:*/}
       <div className="relative hidden lg:flex w-1/2 items-center justify-center bg-blue-900">
         <img
           src={loginBg}
@@ -59,7 +54,6 @@ const Login = () => {
         </div>
       </div>
 
-      {/* Right Section: Form */}
       <div className="flex w-full lg:w-1/2 items-center justify-center bg-[#022c5e] p-6">
         <div className="w-full max-w-md rounded-[2.5rem] bg-white p-12 shadow-2xl">
           <div className="mb-10 flex flex-col items-center">
@@ -84,20 +78,19 @@ const Login = () => {
             <div className="border-b border-gray-300 relative">
               <label className="block text-xs text-gray-400 uppercase font-semibold">Password</label>
               <input
-                type={showPassword ? "text" : "password"} // Switches between text and password
+                type={showPassword ? "text" : "password"}
                 value={password}
                 className="w-full py-2 outline-none focus:border-blue-500 bg-transparent text-gray-700 pr-10"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
               />
-              {/*  Toggle Button */}
+              
               <button
                 type="button"
                 className="absolute right-0 bottom-2 text-gray-400 hover:text-blue-500"
                 onClick={() => setShowPassword(!showPassword)}
               >
-
               </button>
             </div>
 
@@ -108,7 +101,7 @@ const Login = () => {
             <p className="text-center text-sm text-gray-400">
               Do you have an account? <Link to="/register" className="text-orange-600 font-bold cursor-pointer hover:underline">Register</Link>
             </p>
-            {error ? <div className="bg-red-300 border-red-500 border-2 rounded-2xl p-2 backdrop-blur-md text-[15px] font-bold">{error}</div> : <></>}
+            {error ? <div className="bg-red-300 border-red-500 border-2 rounded-2xl p-2 backdrop-blur-md text-[15px] font-bold">{error}</div> : null}
           </form>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom'; // 1. IMPORT NAVLINK FROM REACT ROUTER
 import { 
   LayoutDashboard, 
   Compass, 
@@ -10,6 +11,19 @@ import {
 
 const SideNavbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  // Helper function to dynamically apply styling based on whether the route is active
+  const getLinkClassName = ({ isActive }) => `
+    flex items-center transition-all overflow-hidden flex-1 md:flex-none
+    /* Mobile */
+    flex-col justify-center gap-1 border-t-4
+    /* Desktop */
+    md:flex-row md:py-3 md:border-t-0 md:border-l-4 
+    ${isSidebarOpen ? 'md:px-6 md:gap-4 md:justify-start' : 'md:justify-center md:px-0'}
+    ${isActive 
+      ? 'font-semibold border-blue-600 text-blue-600 bg-blue-50/50 md:bg-blue-100' 
+      : 'border-transparent text-blue-400 hover:bg-blue-50 md:hover:bg-blue-100'}
+  `;
 
   return (
     <aside 
@@ -36,68 +50,40 @@ const SideNavbar = () => {
       {/* Navigation Links */}
       <nav className="flex flex-row md:flex-col w-full h-full md:h-auto md:gap-1">
         
-        {/* Active Link: Dashboard */}
-        <a href="#" className={`
-          flex items-center transition-all overflow-hidden font-semibold flex-1 md:flex-none
-          /* Mobile */
-          flex-col justify-center gap-1 border-t-4 border-blue-600 text-blue-600 bg-blue-50/50
-          /* Desktop */
-          md:flex-row md:py-3 md:bg-blue-100 md:border-t-0 md:border-l-4 md:gap-4
-          ${isSidebarOpen ? 'md:px-6 md:justify-start' : 'md:justify-center md:px-0'}
-        `}>
+        {/* LINK 1: Dashboard (Routes to root "/") */}
+        <NavLink to="/dashboard" className={getLinkClassName} end>
           <LayoutDashboard size={20} className="shrink-0" />
           <span className={`text-[10px] md:text-large-body whitespace-nowrap ${!isSidebarOpen && 'md:hidden'}`}>
             Dashboard
           </span>
-        </a>
+        </NavLink>
         
-        {/* Inactive Link: Club Explore */}
-        <a href="#" className={`
-          flex items-center transition-all overflow-hidden flex-1 md:flex-none
-          /* Mobile */
-          flex-col justify-center gap-1 border-t-4 border-transparent text-blue-400 hover:bg-blue-50
-          /* Desktop */
-          md:flex-row md:py-3 md:hover:bg-blue-100 md:border-t-0 md:border-l-4 
-          ${isSidebarOpen ? 'md:px-6 md:gap-4 md:justify-start' : 'md:justify-center md:px-0'}
-        `}>
+        {/* LINK 2: Club Explore (Routes to "/explore") */}
+        <NavLink to="/explore" className={getLinkClassName}>
           <Compass size={20} className="shrink-0" />
           <span className={`text-[10px] md:text-large-body whitespace-nowrap ${!isSidebarOpen && 'md:hidden'}`}>
             <span className="md:hidden">Explore</span>
             <span className="hidden md:inline">Club Explore</span>
           </span>
-        </a>
+        </NavLink>
         
-        {/* Inactive Link: Events Calendar */}
-        <a href="#" className={`
-          flex items-center transition-all overflow-hidden flex-1 md:flex-none
-          /* Mobile */
-          flex-col justify-center gap-1 border-t-4 border-transparent text-blue-400 hover:bg-blue-50
-          /* Desktop */
-          md:flex-row md:py-3 md:hover:bg-blue-100 md:border-t-0 md:border-l-4 
-          ${isSidebarOpen ? 'md:px-6 md:gap-4 md:justify-start' : 'md:justify-center md:px-0'}
-        `}>
+        {/* LINK 3: Events Calendar (Add your route like to="/calendar" later) */}
+        <NavLink to="/eventcalendar" className={getLinkClassName}>
           <CalendarDays size={20} className="shrink-0" />
           <span className={`text-[10px] md:text-large-body whitespace-nowrap ${!isSidebarOpen && 'md:hidden'}`}>
             <span className="md:hidden">Calendar</span>
             <span className="hidden md:inline">Events Calendar</span>
           </span>
-        </a>
+        </NavLink>
         
-        {/* Inactive Link: Announcements */}
-        <a href="#" className={`
-          flex items-center transition-all overflow-hidden flex-1 md:flex-none
-          /* Mobile */
-          flex-col justify-center gap-1 border-t-4 border-transparent text-blue-400 hover:bg-blue-50
-          /* Desktop */
-          md:flex-row md:py-3 md:hover:bg-blue-100 md:border-t-0 md:border-l-4 
-          ${isSidebarOpen ? 'md:px-6 md:gap-4 md:justify-start' : 'md:justify-center md:px-0'}
-        `}>
+        {/* LINK 4: Announcements (Add your route like to="/announcements" later) */}
+        <NavLink to="/announcements" className={getLinkClassName}>
           <Megaphone size={20} className="shrink-0" />
           <span className={`text-[10px] md:text-large-body whitespace-nowrap ${!isSidebarOpen && 'md:hidden'}`}>
             <span className="md:hidden">News</span>
             <span className="hidden md:inline">Announcements</span>
           </span>
-        </a>
+        </NavLink>
         
       </nav>
     </aside>
