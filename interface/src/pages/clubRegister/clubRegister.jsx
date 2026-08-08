@@ -9,9 +9,9 @@ function clubRegister() {
 
       <div className="flex flex-1">
         {/* Sidebar (Left Side) */}
-        <aside className="w-64 bg-white border-r shadow- hidden md:block">
+        <aside className="w-64 bg-white border-r border-gray-200 hidden md:block shadow-xl">
           <div className="p-4 flex flex-col gap-2 mt-4">
-            <div className="flex items-center gap-3 p-3 bg-gray-100 rounded-md font-bold text-sm cursor-pointer border-l-4 border-blue-900">
+            <div className="flex items-center gap-3 p-3 bg-gray-100 rounded-md font-bold text-sm cursor-pointer border-r-4 border-blue-900">
               <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
               Dashboard
             </div>
@@ -36,7 +36,7 @@ function clubRegister() {
           {/* Hero Banner Area */}
           <div className="relative bg-[#0b1f3d] py-16 flex items-center justify-center overflow-hidden">
             {/* Background Text Watermark (New Club) */}
-            <h1 className="absolute text-[8rem] font-black text-white/5 whitespace-nowrap tracking-widest select-none pointer-events-none">
+            <h1 className="absolute text-[11rem] font-black text-white/5 whitespace-nowrap tracking-widest select-none pointer-events-none">
               New Club
             </h1>
             {/* Main Title */}
@@ -47,7 +47,7 @@ function clubRegister() {
 
           {/* Form and Info Section */}
           <div className="p-8 flex justify-center">
-            <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
               
               {/* Left Form Area */}
               <div className="lg:col-span-2 bg-white p-8 rounded-xl shadow-xl border border-gray-200">
@@ -112,7 +112,7 @@ function clubRegister() {
               </div>
 
               {/* Right Info Area */}
-              <div className="bg-[#bac1ca] p-8 rounded-xl h-fit">
+              <div className="bg-[#bac1ca] p-8 rounded-xl h-full">
                 <h4 className="text-xl font-bold mb-4 text-black">Registration Steps</h4>
                 <ol className="list-none space-y-1.5 mb-8 text-black font-semibold text-sm">
                   <li>1. Fill the form</li>
