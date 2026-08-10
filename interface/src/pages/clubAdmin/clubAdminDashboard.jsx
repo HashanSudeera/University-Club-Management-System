@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image as ImageIcon, Calendar as CalendarIcon, Clock, Users, Settings } from 'lucide-react';
+import { useNavigate, Link } from "react-router-dom";
 
 // Import components
 import TopNavbar from '../../components/Dashboard/TopNavbar.jsx';
@@ -56,17 +57,13 @@ const ClubAdminDashboard = () => {
                 <p className="text-xs text-blue-400 mt-0.5">Here is what's happening with your clubs today.</p>
               </div>
 
-              {/* ========================================================
-                  1. NEW: MANAGE CLUB SECTION (Admin UI)
-              ======================================================== */}
               <div className="bg-blue-50/60 border border-blue-200/80 rounded-2xl p-4 md:p-6 shadow-sm">
                 
-                {/* Section Header & Add Club Button */}
                 <div className="flex justify-between items-center border-b-2 border-blue-900 mb-6 pb-3">
                   <h2 className="text-xl md:text-2xl font-bold text-blue-950">Manage Club</h2>
-                  <button className="bg-[#031428] hover:bg-blue-900 text-white text-xs md:text-sm font-semibold px-5 md:px-6 py-2 md:py-2.5 rounded-lg transition-colors shadow-sm">
+                  <Link to='/clubRegister' className="bg-blue-500 hover:bg-blue-300 text-white text-xs md:text-sm font-semibold px-5 md:px-6 py-2 md:py-2.5 rounded-lg transition-colors shadow-sm">
                     Add Club
-                  </button>
+                  </Link>
                 </div>
 
                 {/* Manage Club Card */}
@@ -117,9 +114,7 @@ const ClubAdminDashboard = () => {
 
               </div>
 
-              {/* ========================================================
-                  2. JOINED CLUBS SECTION
-              ======================================================== */}
+              
               <div className="bg-blue-50/60 border border-blue-200/80 rounded-2xl p-4 md:p-6 shadow-sm">
                 
                 {/* Joined Clubs Header */}
@@ -129,7 +124,9 @@ const ClubAdminDashboard = () => {
                 
                 {/* Clubs Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                  
                   {clubs.map((club, index) => (
+                    <Link to='/club'>
                     <div key={index} className="rounded-xl overflow-hidden shadow-sm flex flex-col bg-white border border-blue-100">
                       <div className="h-40 md:h-48 bg-[#899bb1] flex items-center justify-center">
                         <ImageIcon size={56} className="text-[#031428] md:w-16 md:h-16" strokeWidth={1.5} />
@@ -144,8 +141,11 @@ const ClubAdminDashboard = () => {
                         </span>
                       </div>
                     </div>
+                    </Link>
                   ))}
+                  
                 </div>
+                
 
               </div>
 

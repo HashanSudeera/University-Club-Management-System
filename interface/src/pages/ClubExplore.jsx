@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import { 
   Image as ImageIcon, 
   Search, 
@@ -102,6 +104,7 @@ const ClubExplore = () => {
               ======================================================== */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
                 {clubs.map((club, index) => (
+                  <Link to='/club'>
                   <div 
                     key={index} 
                     className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col bg-white border border-blue-100 group cursor-pointer"
@@ -126,6 +129,7 @@ const ClubExplore = () => {
                       </span>
                     </div>
                   </div>
+                  </Link>
                 ))}
               </div>
 

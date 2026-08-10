@@ -9,31 +9,34 @@ import ClubMamberDashboard from "./pages/clubMember/ClubMemberDashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import Home from "./pages/Home";
-import Test from "./pages/clubMember/test";
 import UniversityAdminDashboard from "./pages/universityAdmin/UniversityAdminDashboard";
 import ClubExplore from "./pages/ClubExplore";
 import ClubPage from "./pages/ClubPage";
 import Announcement from "./pages/Announcement";
-import AboutUs from "./pages/AboutUs/AboutUs";
+import AboutUs from "./pages/AboutUs";
 import UserProfile from "./pages/userProfile";
 import EventCalendar from "./pages/EventCalendar";
 import CreateEvent from "./pages/CreateEvent";
-import ClubRegister from "./pages/clubRegister/clubRegister";
+import ClubRegister from "./pages/ClubRegister";
+import ClubadminRequest from "./pages/universityAdmin/ClubadminRequest";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          <Route path="/userprofile" element={<UserProfile />}></Route>
-          <Route path="/" element={<Home />} />
-
           <Route
             path="/login"
             element={
               <PublicRoute>
                 <Login />
               </PublicRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={
+                <Home />
             }
           />
           <Route
@@ -46,10 +49,27 @@ function App() {
           />
 
           <Route
+            path="/userprofile"
+            element={
+              <PrivateRoute>
+                <UserProfile />
+              </PrivateRoute>
+              }
+          />
+
+          <Route
             path="/club"
             element={
               <PrivateRoute>
                 <ClubPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/ClubadminRequest"
+            element={
+              <PrivateRoute>
+                <ClubadminRequest />
               </PrivateRoute>
             }
           />
@@ -96,14 +116,6 @@ function App() {
             }
           />
           <Route
-            path="/test"
-            element={
-              <PrivateRoute>
-                <Test />
-              </PrivateRoute>
-            }
-          />
-          <Route
             path="/explore"
             element={
               <PrivateRoute>
@@ -120,7 +132,9 @@ function App() {
           <Route 
             path="/clubRegister" 
             element={
+              <PrivateRoute>
               <ClubRegister />
+              </PrivateRoute>
             } 
           />
         </Routes>

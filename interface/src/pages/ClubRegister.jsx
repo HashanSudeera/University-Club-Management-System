@@ -1,6 +1,7 @@
 import React from 'react';
-import Navbar from '../../components/Dashboard/TopNavbar';
-import clubLinkLogo from '../../assets/clublink1.svg';
+import Navbar from '../components/Dashboard/TopNavbar';
+import SideNavbar from '../components/Dashboard/SideNavbar';
+import clubLinkLogo from '../assets/clublink1.svg';
 
 function clubRegister() {
   return (
@@ -9,26 +10,7 @@ function clubRegister() {
 
       <div className="flex flex-1">
         {/* Sidebar (Left Side) */}
-        <aside className="w-64 bg-white border-r border-gray-200 hidden md:block shadow-xl">
-          <div className="p-4 flex flex-col gap-2 mt-4">
-            <div className="flex items-center gap-3 p-3 bg-gray-100 rounded-md font-bold text-sm cursor-pointer border-r-4 border-blue-900">
-              <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-              Dashboard
-            </div>
-            <div className="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-50 rounded-md text-sm cursor-pointer mt-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
-              Club Explore
-            </div>
-            <div className="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-50 rounded-md text-sm cursor-pointer mt-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-              Events Calendar
-            </div>
-            <div className="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-50 rounded-md text-sm cursor-pointer mt-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
-              Announcements
-            </div>
-          </div>
-        </aside>
+        <SideNavbar />
 
         {/* Main Content Area */}
         <main className="flex-1 flex flex-col">
