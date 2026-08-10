@@ -1,5 +1,5 @@
-
 import React from 'react';
+import { useNavigate, Link } from "react-router-dom";
 import { 
   Image as ImageIcon, 
   Calendar as CalendarIcon, 
@@ -260,6 +260,7 @@ const UniversityAdminDashboard = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 {clubs.map((club, index) => (
+                  <Link to='/club'>
                   <div key={index} className="rounded-xl overflow-hidden shadow-sm flex flex-col bg-white">
                     <div className="h-40 md:h-48 bg-blue-200 flex items-center justify-center">
                       <ImageIcon size={56} className="text-blue-300 md:w-16 md:h-16" strokeWidth={1.5} />
@@ -274,6 +275,7 @@ const UniversityAdminDashboard = () => {
                       </span>
                     </div>
                   </div>
+                  </Link>
                 ))}
               </div>
 

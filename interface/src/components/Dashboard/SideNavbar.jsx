@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom'; // 1. IMPORT NAVLINK FROM REACT ROUTER
+import { NavLink } from 'react-router-dom';
+import { useAuth } from "../../context/AuthContext";
+
 import { 
   LayoutDashboard, 
   Compass, 
   CalendarDays, 
   Megaphone, 
   PanelLeftClose, 
-  PanelLeftOpen 
+  PanelLeftOpen,
+  UserCheck
 } from 'lucide-react';
 
 const SideNavbar = () => {
+
+  //add user auth
+  const { auth } = useAuth();
+
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  // Helper function to dynamically apply styling based on whether the route is active
   const getLinkClassName = ({ isActive }) => `
     flex items-center transition-all overflow-hidden flex-1 md:flex-none
     /* Mobile */
@@ -47,18 +54,25 @@ const SideNavbar = () => {
         </button>
       </div>
 
-      {/* Navigation Links */}
       <nav className="flex flex-row md:flex-col w-full h-full md:h-auto md:gap-1">
         
-        {/* LINK 1: Dashboard (Routes to root "/") */}
+        
         <NavLink to="/dashboard" className={getLinkClassName} end>
           <LayoutDashboard size={20} className="shrink-0" />
           <span className={`text-[10px] md:text-large-body whitespace-nowrap ${!isSidebarOpen && 'md:hidden'}`}>
             Dashboard
           </span>
         </NavLink>
+
+        {auth?.role === 'Uni Admin' && (
+        <NavLink to="/ClubadminRequest" className={getLinkClassName}>
+          <UserCheck size={20} className="shrink-0" />
+          <span className={`text-[10px] md:text-large-body whitespace-nowrap ${!isSidebarOpen && 'md:hidden'}`}>
+            <span className="md:hidden">Request</span>
+            <span className="hidden md:inline">Club Admin Request</span>
+          </span>
+        </NavLink>)}
         
-        {/* LINK 2: Club Explore (Routes to "/explore") */}
         <NavLink to="/explore" className={getLinkClassName}>
           <Compass size={20} className="shrink-0" />
           <span className={`text-[10px] md:text-large-body whitespace-nowrap ${!isSidebarOpen && 'md:hidden'}`}>
@@ -67,7 +81,6 @@ const SideNavbar = () => {
           </span>
         </NavLink>
         
-        {/* LINK 3: Events Calendar (Add your route like to="/calendar" later) */}
         <NavLink to="/eventcalendar" className={getLinkClassName}>
           <CalendarDays size={20} className="shrink-0" />
           <span className={`text-[10px] md:text-large-body whitespace-nowrap ${!isSidebarOpen && 'md:hidden'}`}>
@@ -76,7 +89,6 @@ const SideNavbar = () => {
           </span>
         </NavLink>
         
-        {/* LINK 4: Announcements (Add your route like to="/announcements" later) */}
         <NavLink to="/announcements" className={getLinkClassName}>
           <Megaphone size={20} className="shrink-0" />
           <span className={`text-[10px] md:text-large-body whitespace-nowrap ${!isSidebarOpen && 'md:hidden'}`}>

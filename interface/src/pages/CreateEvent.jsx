@@ -10,6 +10,9 @@ import {
   ChevronDown 
 } from 'lucide-react';
 
+import TopNavbar from '../components/Dashboard/TopNavbar.jsx';
+import SideNavbar from '../components/Dashboard/SideNavbar.jsx';
+
 const CreateEvent = () => {
   const [formData, setFormData] = useState({
     eventName: '',
@@ -39,56 +42,12 @@ const CreateEvent = () => {
   return (
     <div className="min-h-screen bg-[#EFEFEF] flex flex-col font-sans text-slate-800">
       {/* Top Bar */}
-      <header className="bg-[#001220] text-white px-6 py-3 flex items-center justify-between shadow-md">
-        <div className="flex items-center space-x-3">
-          <div className="w-9 h-9 border-2 border-amber-400 rounded-lg flex items-center justify-center font-bold text-amber-400 text-lg">
-            CL
-          </div>
-          <div>
-            <h1 className="font-bold text-lg leading-tight tracking-wide">Club Link</h1>
-            <p className="text-[10px] text-gray-400 leading-none">University Club Management System</p>
-          </div>
-        </div>
-
-        <div className="flex items-center space-x-6">
-          <button className="relative text-gray-300 hover:text-white transition-colors">
-            <Bell size={20} />
-            <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
-          
-          <div className="flex items-center space-x-3">
-            <div className="text-right">
-              <div className="font-semibold text-sm leading-tight">Name</div>
-              <div className="text-[11px] text-gray-400">Club member</div>
-            </div>
-            <div className="w-9 h-9 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center">
-              <User size={20} />
-            </div>
-          </div>
-        </div>
-      </header>
+      <TopNavbar />
 
       {/* Main Content Area */}
       <div className="flex flex-1">
         {/* Sidebar */}
-        <aside className="w-64 bg-white border-r border-gray-200 py-6 px-4 flex flex-col space-y-1">
-          <a href="#" className="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-100 font-medium text-sm transition-colors">
-            <LayoutDashboard size={18} />
-            <span>Dashboard</span>
-          </a>
-          <a href="#" className="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-100 font-medium text-sm transition-colors">
-            <Compass size={18} />
-            <span>Club Explore</span>
-          </a>
-          <a href="#" className="flex items-center space-x-3 px-4 py-3 rounded-xl bg-gray-100 text-[#001220] font-semibold text-sm border-r-4 border-[#001220]">
-            <Calendar size={18} />
-            <span>Event Calendar</span>
-          </a>
-          <a href="#" className="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-100 font-medium text-sm transition-colors">
-            <Megaphone size={18} />
-            <span>Announcements</span>
-          </a>
-        </aside>
+        <SideNavbar/>
 
         {/* Event Form Card */}
         <main className="flex-1 p-8 overflow-y-auto">

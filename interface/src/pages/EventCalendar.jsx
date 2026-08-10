@@ -2,6 +2,7 @@ import React from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import {Link} from 'react-router-dom';
 
 // Imported external components
 import TopNavbar from '../components/Dashboard/TopNavbar.jsx';
@@ -27,9 +28,9 @@ export default function EventCalendar() {
             {/* Page Header */}
             <div className="flex items-center justify-between px-8 py-5 border-b-[3px] border-[#0B1727] shrink-0">
               <h2 className="text-[26px] font-bold text-[#0B1727]">Event Calendar</h2>
-              <button className="bg-[#0B1727] text-white px-8 py-2.5 rounded text-sm font-medium hover:bg-opacity-90 transition-colors">
+              <Link to='/AddEvent' className="bg-[#0B1727] text-white px-8 py-2.5 rounded text-sm font-medium hover:bg-opacity-90 transition-colors">
                 Add Event
-              </button>
+              </Link>
             </div>
 
             {/* Calendar Wrapper */}

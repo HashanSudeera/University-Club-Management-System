@@ -8,8 +8,8 @@ import {
 } from 'lucide-react';
 
 // Import your existing layout components
-import TopNavbar from '../components/Dashboard/TopNavbar.jsx';
-import SideNavbar from '../components/Dashboard/SideNavbar.jsx';
+import TopNavbar from '../../components/Dashboard/TopNavbar.jsx';
+import SideNavbar from '../../components/Dashboard/SideNavbar.jsx';
 
 const ClubAdminRequests = () => {
   // Mock data matching the UI mockup
@@ -55,7 +55,17 @@ const ClubAdminRequests = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 bg-[#e9ecef] rounded-2xl shadow-sm border border-slate-300">
+     <div className="min-h-screen bg-blue-50 font-sans flex flex-col">
+      <TopNavbar />
+
+      <div className="flex flex-1 flex-col md:flex-row overflow-hidden">
+        
+        {/* Left Navbar */}
+        <SideNavbar />
+
+        {/* Main Content Area */}
+        <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
+          
       
       {/* Header Bar */}
       <div className="flex items-center justify-between pb-3 mb-5 border-b-2 border-[#1e293b]">
@@ -141,7 +151,13 @@ const ClubAdminRequests = () => {
         </div>
 
       </div>
+    
+        </main>
+
+      </div>
     </div>
+    
+    
   );
 };
 

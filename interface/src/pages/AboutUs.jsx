@@ -1,6 +1,6 @@
 import React from 'react';
-import Navbar from '../../components/Navbar';
-import clubLinkLogo from '../../assets/clublink1.svg';
+import Navbar from '../components/Navbar';
+import clubLinkLogo from '../assets/clublink1.svg';
 
 function AboutUs() {
   return (
