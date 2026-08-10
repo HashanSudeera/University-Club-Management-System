@@ -18,6 +18,7 @@ import AboutUs from "./pages/AboutUs/AboutUs";
 import UserProfile from "./pages/userProfile";
 import EventCalendar from "./pages/EventCalendar";
 import CreateEvent from "./pages/CreateEvent";
+import ClubRegister from "./pages/clubRegister/clubRegister";
 
 function App() {
   return (
@@ -110,7 +111,18 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path="/AboutUs" element={<AboutUs />} />
+          <Route 
+            path="/AboutUs" 
+            element={
+              <AboutUs />
+            } 
+          />
+          <Route 
+            path="/clubRegister" 
+            element={
+              <ClubRegister />
+            } 
+          />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
