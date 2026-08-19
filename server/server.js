@@ -6,11 +6,13 @@ import cors from "cors";
 import authRoutes from "./routes/auth.js";
 import { PORT, MONGO_URL } from './config.js';
 
+import adminRoutes from './routes/admin.js';
+
 const app = express();
 app.use(express.json());
 app.use(
     cors({
-        origin: "http://localhost:5173", // Adjust this to your frontend URL
+        origin: "http://localhost:5173", //frontend URL
         credentials: true,
     })
 );
@@ -24,6 +26,7 @@ app.use((req, res, next) => {
 
 //ROUTES
 app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
 
 //connect Mongo database
 mongoose.connect(MONGO_URL)
