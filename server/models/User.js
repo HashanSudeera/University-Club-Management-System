@@ -1,7 +1,12 @@
 import mongoose from "mongoose";
+import getNextSequence from "../utils/generateId.js";
 
 const userSchema = new mongoose.Schema(
   {
+    user_id: {
+      type: String, 
+      unique: true 
+    },
     firstName: {
       type: String,
       required: true
@@ -34,7 +39,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: ['1st Year', '2nd Year', '3rd Year', '4th Year']
-    }
+    },
+    clubs: [{
+      type: mongoose.Schema.Types.ObjectId, //club array
+      ref: 'Club'
+    }]
   },
   { timestamps: true }
 );
