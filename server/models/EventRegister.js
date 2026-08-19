@@ -12,4 +12,4 @@ const EventRegisterSchema = new mongoose.Schema({
    { type: mongoose.Schema.Types.Mixed } // Flexible type for various addons.
 }, { timestamps: true });
 
-module.exports = mongoose.model('EventRegister', EventRegisterSchema);
+export default mongoose.model("EventRegister", EventRegisterSchema);
