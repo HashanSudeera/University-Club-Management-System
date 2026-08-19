@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const EventRegisterSchema = new mongoose.Schema({
   //
-  event_id: 
+  eventReg_id: 
         { type: String,
          unique: true },
   user_id:
