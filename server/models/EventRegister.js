@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-
+import mongoose from "mongoose";
 const EventRegisterSchema = new mongoose.Schema({
   //
   event_id: 
