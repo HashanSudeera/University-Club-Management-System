@@ -1,0 +1,9 @@
+const mongoose = require('mongoose');
+
+const EventRegisterSchema = new mongoose.Schema({
+  //
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  addons: { type: mongoose.Schema.Types.Mixed } // Flexible type for various addons
+}, { timestamps: true });
+
+module.exports = mongoose.model('EventRegister', EventRegisterSchema);
