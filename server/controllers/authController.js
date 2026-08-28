@@ -110,6 +110,7 @@ const login = async (req, res) => {
       accessToken,
       user: {
         id: user._id,
+        user_id:user.user_id,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
@@ -151,6 +152,7 @@ const refreshToken = async (req, res) => {
       accessToken: newAccessToken,
       user: {
         id: user._id,
+        user_id:user.user_id,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,

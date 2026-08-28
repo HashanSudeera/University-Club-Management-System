@@ -1,11 +1,14 @@
 import React from 'react';
 import { Bell, Menu } from 'lucide-react'; // 1. Imported Menu (3 bars icon)
 import Logo from "/clublink.svg";
+import { useAuth } from "../../context/AuthContext";
 
 import { useNavigate, Link } from "react-router-dom"; 
 
 // Added onMenuToggle prop in case you want to trigger the mobile sidebar!
 const TopNavbar = ({ onMenuToggle }) => {
+  const { auth } = useAuth();
+
   return (
     <header className="h-[64px] md:h-[72px] bg-blue-900 text-white flex items-center justify-between px-4 md:px-6 shrink-0 relative z-30 shadow-md">
       
@@ -40,8 +43,12 @@ const TopNavbar = ({ onMenuToggle }) => {
         {/* PROFILE BADGE: Hidden on mobile ('hidden'), visible on tablet/desktop ('md:flex') */}
         <div className="hidden md:flex items-center gap-3 pl-2 border-l border-blue-800/80">
           <div className="text-right">
-            <p className="font-bold text-large-body leading-tight">Name</p>
-            <p className="text-regular-body text-blue-200">Club member</p>
+            <p className="font-bold text-large-body leading-tight">{auth?.user?.firstName || "User"}</p>
+          {auth?.role === 'Uni Admin' && (  
+            <p className="text-regular-body text-blue-200">Uni Admin</p>) || auth?.role === 'Club Admin' && (  
+            <p className="text-regular-body text-blue-200">Club Admin</p>) || auth?.role === 'Club Member' && (  
+            <p className="text-regular-body text-blue-200">Club Member</p>) 
+          }
           </div>
           <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 shadow-inner">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
