@@ -10,6 +10,10 @@ const ClubSchema = new mongoose.Schema(
         type: String,
         required: true 
     },
+    clubadmin_id: {
+        type: String,
+        required: true 
+    },
     category: {
         type: String,
         required: true  

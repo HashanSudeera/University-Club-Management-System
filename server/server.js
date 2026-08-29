@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.js";
 import { PORT, MONGO_URL } from './config.js';
 
 import adminRoutes from './routes/admin.js';
+import clubadminRoutes from './routes/clubAdmin.js';
 
 const app = express();
 app.use(express.json());
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
 //ROUTES
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/clubadmin", clubadminRoutes);
 
 //connect Mongo database
 mongoose.connect(MONGO_URL)
