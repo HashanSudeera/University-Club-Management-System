@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate, Link } from "react-router-dom";
 import { 
   Image as ImageIcon, 
@@ -21,6 +22,29 @@ import SideNavbar from '../../components/Dashboard/SideNavbar.jsx';
 import SmallFullCalendar from '../../components/Dashboard/SmallCalendar.jsx'; 
 
 const UniversityAdminDashboard = () => {
+    // 1.Create Status
+    const [stats, setStats] = useState({
+        totalUsers: 0,
+        clubAdmins: 0,
+        clubMembers: 0
+    });
+
+    // 2.   Data Fetch in useEffect
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                // Backend port connection
+                const res = await axios.get('http://localhost:4000/api/admin/user-stats');
+                if (res.data.success) {
+                    setStats(res.data.data);
+                }
+            } catch (error) {
+                console.error("Error fetching dashboard stats:", error);
+            }
+        };
+
+        fetchStats();
+    }, []);
     
   // Mock data for clubs (kept untouched as requested)
   const clubs = Array(5).fill({
@@ -44,7 +68,7 @@ const UniversityAdminDashboard = () => {
   ];
 
   // ========================================================
-  // NEW: MOCK DATA FOR UNIVERSITY ADMIN MIDDLE SECTION
+  // MOCK DATA FOR UNIVERSITY ADMIN MIDDLE SECTION
   // ========================================================
   const adminRequests = [
     { initials: 'JC', name: 'Jane Cooper', email: 'jessica.hanson@example.com', date: '5/27/15' },
@@ -110,7 +134,7 @@ const UniversityAdminDashboard = () => {
                   <div className="bg-[#031428] rounded-xl p-5 flex items-center justify-between text-white shadow-sm">
                     <div>
                       <p className="text-xs md:text-sm text-gray-300 font-medium">Total User</p>
-                      <h3 className="text-2xl md:text-3xl font-bold text-[#f0c05a] mt-1">40,689</h3>
+                      <h3 className="text-2xl md:text-3xl font-bold text-[#f0c05a] mt-1">{stats.totalUsers}</h3>
                     </div>
                     <div className="w-12 h-12 bg-[#1e324a] rounded-xl flex items-center justify-center text-[#6882a0]">
                       <Users size={24} />
@@ -120,8 +144,8 @@ const UniversityAdminDashboard = () => {
                   {/* Card 2: Total Club */}
                   <div className="bg-[#031428] rounded-xl p-5 flex items-center justify-between text-white shadow-sm">
                     <div>
-                      <p className="text-xs md:text-sm text-gray-300 font-medium">Total Club</p>
-                      <h3 className="text-2xl md:text-3xl font-bold text-[#f0c05a] mt-1">100</h3>
+                      <p className="text-xs md:text-sm text-gray-300 font-medium">Total Club<br/>Members</p>
+                      <h3 className="text-2xl md:text-3xl font-bold text-[#f0c05a] mt-1">{stats.clubMembers}</h3>
                     </div>
                     <div className="w-12 h-12 bg-[#1e324a] rounded-xl flex items-center justify-center text-[#f0c05a]">
                       <Box size={24} />
@@ -131,8 +155,8 @@ const UniversityAdminDashboard = () => {
                   {/* Card 3: Total Completed Events */}
                   <div className="bg-[#031428] rounded-xl p-5 flex items-center justify-between text-white shadow-sm">
                     <div>
-                      <p className="text-xs md:text-sm text-gray-300 font-medium leading-tight">Total Completed<br/>Events</p>
-                      <h3 className="text-2xl md:text-3xl font-bold text-[#f0c05a] mt-1">34</h3>
+                      <p className="text-xs md:text-sm text-gray-300 font-medium leading-tight">Total Club<br/>Admins</p>
+                      <h3 className="text-2xl md:text-3xl font-bold text-[#f0c05a] mt-1">{stats.clubAdmins}</h3>
                     </div>
                     <div className="w-12 h-12 bg-[#0e3b3e] rounded-xl flex items-center justify-center text-[#2dd4bf]">
                       <Bookmark size={24} />
@@ -250,35 +274,6 @@ const UniversityAdminDashboard = () => {
                   ))}
                 </div>
               </div>
-
-              {/* ========================================================
-                  4. JOINED CLUBS SECTION (Original Section Kept Untouched)
-              ======================================================== */}
-              <div className="border-b-2 border-blue-600 mb-6 pb-2 pt-4">
-                <h2 className="text-2xl md:text-3xl font-bold text-blue-600">Joined Clubs</h2>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                {clubs.map((club, index) => (
-                  <Link to='/club'>
-                  <div key={index} className="rounded-xl overflow-hidden shadow-sm flex flex-col bg-white">
-                    <div className="h-40 md:h-48 bg-blue-200 flex items-center justify-center">
-                      <ImageIcon size={56} className="text-blue-300 md:w-16 md:h-16" strokeWidth={1.5} />
-                    </div>
-                    <div className="bg-blue-600 p-4 flex justify-between items-center min-h-[5rem]">
-                      <div className="pr-2">
-                        <h3 className="text-white text-lg font-semibold leading-tight">{club.name}</h3>
-                        <p className="text-blue-100 text-sm md:text-base line-clamp-1">{club.description}</p>
-                      </div>
-                      <span className="bg-yellow-500 text-blue-900 px-4 py-1 rounded text-xs md:text-sm font-semibold shrink-0">
-                        {club.category}
-                      </span>
-                    </div>
-                  </div>
-                  </Link>
-                ))}
-              </div>
-
             </div>
           </main>
 

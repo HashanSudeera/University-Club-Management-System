@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import validator from 'validator';
 import { REFRESH_TOKEN_SECRET, ACCESS_TOKEN_SECRET } from "../config.js";
+import getNextSequence from "../utils/generateId.js";
 
 
 //register user
@@ -33,7 +34,10 @@ const register = async (req, res) => {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    const newUserId = await getNextSequence('user_id', 'USR');
+
     const user = new User({
+      user_id: newUserId,
       firstName,
       lastName,
       address,
@@ -106,6 +110,7 @@ const login = async (req, res) => {
       accessToken,
       user: {
         id: user._id,
+        user_id:user.user_id,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
@@ -147,6 +152,7 @@ const refreshToken = async (req, res) => {
       accessToken: newAccessToken,
       user: {
         id: user._id,
+        user_id:user.user_id,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,

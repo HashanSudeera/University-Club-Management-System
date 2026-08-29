@@ -24,7 +24,7 @@ const Login = () => {
         withCredentials: true,
       });
 
-      setAuth({ accessToken: res.data.accessToken, role: res.data.user.role });
+      setAuth({ accessToken: res.data.accessToken, role: res.data.user.role , user: res.data.user });
       console.log(res.data);
       navigate("/");
     } catch (err) {

@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
           accessToken: res.data.accessToken,
           role: res.data.user.role,
           email: res.data.user.email,
+          user: res.data.user
         });
       } catch (error) {
         setAuth(null);
