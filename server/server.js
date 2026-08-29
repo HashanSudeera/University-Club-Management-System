@@ -5,6 +5,8 @@ import cors from "cors";
 
 import authRoutes from "./routes/auth.js";
 import { PORT, MONGO_URL } from './config.js';
+import eventRoutes from "./routes/event.js";
+import eventRegisterRoutes from "./routes/eventRegisterRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -15,6 +17,7 @@ app.use(
     })
 );
 app.use(cookieParser());
+app.use(express.json());
 
 //mmiddleware
 app.use((req, res, next) => {
@@ -24,6 +27,10 @@ app.use((req, res, next) => {
 
 //ROUTES
 app.use("/api/auth", authRoutes);
+app.use("/api/events",eventRoutes);
+//app.use("/api/eventRegisters",eventRegisterRoutes);
+app.use("/api/eventRegisters", eventRegisterRoutes);
+
 
 //connect Mongo database
 mongoose.connect(MONGO_URL)
