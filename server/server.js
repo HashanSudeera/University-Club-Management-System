@@ -9,6 +9,7 @@ import eventRoutes from "./routes/event.js";
 import eventRegisterRoutes from "./routes/eventRegisterRoutes.js";
 
 import adminRoutes from './routes/admin.js';
+import clubRoutes from "./routes/club.js";
 
 const app = express();
 app.use(express.json());
@@ -29,14 +30,17 @@ app.use((req, res, next) => {
 
 //ROUTES
 app.use("/api/auth", authRoutes);
-<<<<<<< HEAD
 app.use("/api/events",eventRoutes);
 //app.use("/api/eventRegisters",eventRegisterRoutes);
 app.use("/api/eventRegisters", eventRegisterRoutes);
 
-=======
 app.use("/api/admin", adminRoutes);
->>>>>>> cc3829ff71bc8b88d97ef64836a522efd46c8b5e
+
+app.use("/api/auth", authRoutes);
+
+app.use("/api/admin", adminRoutes);
+
+app.use("/api/clubs", clubRoutes);
 
 //connect Mongo database
 mongoose.connect(MONGO_URL)

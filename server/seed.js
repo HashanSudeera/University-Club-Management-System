@@ -92,8 +92,8 @@ const seedDatabase = async () => {
     const c2 = await getNextSequence('club_id', 'CLB');
     
     const createdClubs = await Club.create([
-      { club_id: c1, club_name: 'Robotics Society', category: 'Technology', status: 'aprove' },
-      { club_id: c2, club_name: 'Chess Club', category: 'Sports', status: 'aprove' }
+      { club_id: c1, club_name: 'Robotics Society', category: 'Technology', status: 'aproved' },
+      { club_id: c2, club_name: 'Chess Club', category: 'Sports', status: 'aproved' }
     ]);
     const [techClub, sportsClub] = createdClubs;
 
