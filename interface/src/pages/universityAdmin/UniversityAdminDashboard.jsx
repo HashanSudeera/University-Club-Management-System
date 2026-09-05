@@ -1,27 +1,102 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from "react-router-dom";
-import { 
-  Image as ImageIcon, 
-  Calendar as CalendarIcon, 
-  Clock, 
-  Users, 
-  Box, 
-  Bookmark, 
-  ArrowUpRight, 
-  Check, 
-  Trash2, 
-  Info, 
-  Volume2, 
-  ArrowUpDown 
+import {
+  Image as ImageIcon,
+  Calendar as CalendarIcon,
+  Clock,
+  Users,
+  Box,
+  Bookmark,
+  ArrowUpRight,
+  Check,
+  Trash2,
+  Info,
+  Volume2,
+  ArrowUpDown
 } from 'lucide-react';
-
 // Import components
 import TopNavbar from '../../components/Dashboard/TopNavbar.jsx';
 import SideNavbar from '../../components/Dashboard/SideNavbar.jsx';
-import SmallFullCalendar from '../../components/Dashboard/SmallCalendar.jsx'; 
+import SmallFullCalendar from '../../components/Dashboard/SmallCalendar.jsx';
+
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+
+// Dummy data
+const dummyClubData = [
+  { name: 'Art Club', memberCount: 150 },
+  { name: 'Sports Club', memberCount: 120 },
+  { name: 'IT Club', memberCount: 90 },
+  { name: 'Drama Club', memberCount: 40 }
+];
+
+//Pie chart blue theam colors
+const COLORS = ['#004B73', '#1798D9', '#57C0F8', '#E6EEF4']; 
+const totalMembers = dummyClubData.reduce((sum, club) => sum + club.memberCount, 0);
+
+// Detail card
+const CustomTooltip = ({ active, payload, coordinate }) => {
+  if (active && payload && payload.length && coordinate) {
+    const data = payload[0].payload;
+    const percentage = ((data.memberCount / totalMembers) * 100).toFixed(1);
+
+    const cx = 140;
+    const cy = 140;
+
+    const mx = coordinate.x;
+    const my = coordinate.y;
+
+    const angle = Math.atan2(my - cy, mx - cx);
+
+   // Distance pie chart & card
+    const outerRadius = 90
+
+    const x = cx + outerRadius * Math.cos(angle);
+    const y = cy + outerRadius * Math.sin(angle);
+
+    const isRight = Math.cos(angle) >= 0;
+    const isBottom = Math.sin(angle) >= 0;
+
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          left: `${x}px`,
+          top: `${y}px`,
+          transform: `translate(${isRight ? '0%' : '-100%'}, ${isBottom ? '0%' : '-100%'})`,
+        }}
+        className="z-50 bg-white p-3.5 rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.15)] border border-gray-100 min-w-[160px] pointer-events-none transition-transform duration-75 ease-out"
+      >
+        {/* Header with color dot */}
+        <div className="flex items-center gap-2 mb-2 border-b border-gray-100 pb-1.5">
+          <span
+            className="w-3 h-3 rounded-full shrink-0 shadow-sm"
+            style={{ backgroundColor: payload[0].color || data.fill }}
+          ></span>
+          <h4 className="font-bold text-gray-800 text-xs sm:text-sm truncate">
+            {data.name}
+          </h4>
+        </div>
+
+        {/* Details */}
+        <div className="flex flex-col gap-1 text-xs sm:text-sm">
+          <div className="flex justify-between items-center gap-3">
+            <span className="text-gray-500 font-medium">Members:</span>
+            <span className="font-bold text-[#004B73]">{data.memberCount}</span>
+          </div>
+          <div className="flex justify-between items-center gap-3">
+            <span className="text-gray-500 font-medium">Percentage:</span>
+            <span className="font-bold text-[#1798D9]">{percentage}%</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
 
 const UniversityAdminDashboard = () => {
+
     // 1.Create Status
     const [stats, setStats] = useState({
         totalUsers: 0,
@@ -62,9 +137,9 @@ const UniversityAdminDashboard = () => {
 
   // FullCalendar Event Format
   const calendarEvents = [
-    { title: 'Sport Meeting', date: '2026-07-14', backgroundColor: '#EF4444' }, 
-    { title: 'Web Dev Workshop', date: '2026-07-18', backgroundColor: '#F59E0B' }, 
-    { title: 'Hackathon Kickoff', date: '2026-07-25', backgroundColor: '#3B82F6' }, 
+    { title: 'Sport Meeting', date: '2026-07-14', backgroundColor: '#EF4444' },
+    { title: 'Web Dev Workshop', date: '2026-07-18', backgroundColor: '#F59E0B' },
+    { title: 'Hackathon Kickoff', date: '2026-07-25', backgroundColor: '#3B82F6' },
   ];
 
   // ========================================================
@@ -103,16 +178,16 @@ const UniversityAdminDashboard = () => {
       <TopNavbar />
 
       <div className="flex flex-1 flex-col md:flex-row overflow-hidden">
-        
+
         {/* Left Navbar */}
         <SideNavbar />
 
         <div className="flex flex-1 flex-col lg:flex-row overflow-y-auto">
-          
+
           {/* Main Content Area */}
           <main className="flex-1 p-4 md:p-6 lg:p-8 order-1">
             <div className="max-w-5xl mx-auto space-y-8">
-              
+
               {/* Mobile-Only Welcome Greeting ('block md:hidden') */}
               <div className="block md:hidden">
                 <h1 className="text-xl font-bold text-blue-900">
@@ -155,6 +230,8 @@ const UniversityAdminDashboard = () => {
                   {/* Card 3: Total Completed Events */}
                   <div className="bg-[#031428] rounded-xl p-5 flex items-center justify-between text-white shadow-sm">
                     <div>
+                      <p className="text-xs md:text-sm text-gray-300 font-medium leading-tight">Total Completed<br />Events</p>
+                      <h3 className="text-2xl md:text-3xl font-bold text-[#f0c05a] mt-1">34</h3>
                       <p className="text-xs md:text-sm text-gray-300 font-medium leading-tight">Total Club<br/>Admins</p>
                       <h3 className="text-2xl md:text-3xl font-bold text-[#f0c05a] mt-1">{stats.clubAdmins}</h3>
                     </div>
@@ -165,9 +242,71 @@ const UniversityAdminDashboard = () => {
                 </div>
               </div>
 
-              {/* ========================================================
-                  2. CLUB ADMIN REQUESTS TABLE
-              ======================================================== */}
+              {/* PIE CHART */}
+              <div className="bg-blue-50/60 border border-blue-200/80 rounded-2xl p-4 md:p-6 shadow-sm">
+                
+                <h2 className="text-xl md:text-2xl font-bold text-blue-950">Club Members Overwiew</h2>
+                <div className="flex justify-between items-center border-b-2 border-blue-900 mb-6 pb-3"></div>
+
+                <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-24">
+                  
+                  <div className="relative h-[280px] w-[280px] flex-shrink-0 flex items-center justify-center">
+                    
+                    {/*Center totsl mrmbers*/}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
+                      <span className="text-4xl font-extrabold text-[#004B73]">{totalMembers}</span>
+                      <span className="text-sm text-gray-500 font-medium mt-1">Total Members</span>
+                    </div>
+
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={dummyClubData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={75}
+                          outerRadius={105}
+                          paddingAngle={0} 
+                          dataKey="memberCount"
+                          stroke="#ffffff"
+                          strokeWidth={2}
+                          isAnimationActive={true}
+                          animationDuration={1200}
+                        >
+                          {dummyClubData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                          ))}
+                        </Pie>
+                        
+                        {/* Cursor tracking for dynamic positioning */}
+                        <Tooltip 
+                          content={<CustomTooltip />} 
+                          position={{ x: 0, y: 0 }}
+                          cursor={{ fill: 'transparent' }} 
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  {/* Right Side: Club Category Names */}
+                  <div className="flex flex-col gap-4">
+                    {dummyClubData.map((entry, index) => (
+                      <div key={`legend-${index}`} className="flex items-center gap-3">
+                        <span 
+                          className="w-4 h-4 rounded-full shrink-0" 
+                          style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                        ></span>
+                        <span className="font-medium text-gray-600 text-[15px]">
+                          {entry.name}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                </div>
+              </div>
+
+              {/* CLUB ADMIN REQUESTS TABLE */}
               <div className="bg-blue-50/60 border border-blue-200/80 rounded-2xl p-4 md:p-6 shadow-sm">
                 <div className="flex justify-between items-center border-b-2 border-blue-900 mb-6 pb-3">
                   <h2 className="text-xl md:text-2xl font-bold text-blue-950">Club Admin requests</h2>
@@ -178,7 +317,7 @@ const UniversityAdminDashboard = () => {
 
                 {/* Table Container */}
                 <div className="bg-[#b3c2d4] rounded-xl overflow-hidden shadow-inner p-2 md:p-3 space-y-2">
-                  
+
                   {/* Table Header */}
                   <div className="bg-[#031428] text-white px-4 py-3 rounded-lg flex items-center justify-between text-xs md:text-sm font-semibold">
                     <div className="flex items-center gap-2 w-1/3">
@@ -196,7 +335,7 @@ const UniversityAdminDashboard = () => {
                   {/* Table Rows */}
                   {adminRequests.map((req, idx) => (
                     <div key={idx} className="bg-[#98acc3]/60 hover:bg-[#98acc3] px-4 py-3 rounded-lg flex items-center justify-between text-xs md:text-sm text-[#031428] font-medium transition-colors">
-                      
+
                       {/* Name & Avatar */}
                       <div className="flex items-center gap-3 w-1/3">
                         <div className="w-8 h-8 bg-[#031428] text-white rounded-full flex items-center justify-center text-xs font-bold shrink-0">
@@ -205,7 +344,7 @@ const UniversityAdminDashboard = () => {
                         <span className="font-bold truncate">{req.name}</span>
                       </div>
 
-                      {/* Email (Hidden on mobile) */}
+                      {/* Email */}
                       <div className="w-1/3 hidden md:block text-gray-800 truncate pr-2">
                         {req.email}
                       </div>
@@ -229,9 +368,7 @@ const UniversityAdminDashboard = () => {
                 </div>
               </div>
 
-              {/* ========================================================
-                  3. ANNOUNCEMENT FEED SECTION
-              ======================================================== */}
+              {/* ANNOUNCEMENT FEED SECTION */}
               <div className="bg-blue-50/60 border border-blue-200/80 rounded-2xl p-4 md:p-6 shadow-sm">
                 <div className="flex justify-between items-center border-b-2 border-blue-900 mb-6 pb-3">
                   <h2 className="text-xl md:text-2xl font-bold text-blue-950">Announcement</h2>
@@ -244,7 +381,7 @@ const UniversityAdminDashboard = () => {
                 <div className="space-y-4">
                   {announcements.map((item, idx) => (
                     <div key={idx} className="bg-[#b3c2d4] rounded-xl p-4 md:p-5 flex flex-col md:flex-row gap-4 items-start justify-between shadow-sm">
-                      
+
                       <div className="flex gap-4 items-start flex-1">
                         {/* Icon Box */}
                         <div className="w-10 h-10 bg-[#f0c05a] rounded-lg flex items-center justify-center shrink-0 shadow-inner mt-0.5">
@@ -274,21 +411,48 @@ const UniversityAdminDashboard = () => {
                   ))}
                 </div>
               </div>
+
+              {/* JOINED CLUBS SECTION */}
+              <div className="border-b-2 border-blue-600 mb-6 pb-2 pt-4">
+                <h2 className="text-2xl md:text-3xl font-bold text-blue-600">Joined Clubs</h2>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                {clubs.map((club, index) => (
+                  <Link key={index} to='/club'>
+                    <div className="rounded-xl overflow-hidden shadow-sm flex flex-col bg-white">
+                      <div className="h-40 md:h-48 bg-blue-200 flex items-center justify-center">
+                        <ImageIcon size={56} className="text-blue-300 md:w-16 md:h-16" strokeWidth={1.5} />
+                      </div>
+                      <div className="bg-blue-600 p-4 flex justify-between items-center min-h-[5rem]">
+                        <div className="pr-2">
+                          <h3 className="text-white text-lg font-semibold leading-tight">{club.name}</h3>
+                          <p className="text-blue-100 text-sm md:text-base line-clamp-1">{club.description}</p>
+                        </div>
+                        <span className="bg-yellow-500 text-blue-900 px-4 py-1 rounded text-xs md:text-sm font-semibold shrink-0">
+                          {club.category}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
             </div>
           </main>
 
-          {/* Right Sidebar (Calendar & Events) - Kept Untouched */}
+          {/* Right Sidebar (Calendar & Events) */}
           <aside className="w-full lg:w-100 bg-blue-50 shrink-0 p-4 md:p-6 lg:border-l border-t lg:border-t-0 border-blue-100/80 space-y-6 order-2">
-            
-            {/* FullCalendar Mini Widget */}
+
+            {/* Calendar */}
             <div className="max-w-md mx-auto lg:max-w-none">
-              <SmallFullCalendar 
+              <SmallFullCalendar
                 events={calendarEvents}
-                onDateClick={handleDateSelection} 
+                onDateClick={handleDateSelection}
               />
             </div>
 
-            {/* Upcoming Events Widget */}
+            {/* Upcoming Events */}
             <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 md:p-6 shadow-sm max-w-md mx-auto lg:max-w-none">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg font-bold text-blue-600">Upcoming Events</h3>
@@ -317,9 +481,9 @@ const UniversityAdminDashboard = () => {
                 View Calendar
               </button>
             </div>
-            
+
           </aside>
-          
+
         </div>
       </div>
     </div>
