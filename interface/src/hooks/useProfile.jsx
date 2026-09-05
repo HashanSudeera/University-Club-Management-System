@@ -17,12 +17,13 @@ export const useProfile = () => {
       }
 
       try {
-        const res = await axios.get("http://localhost:4000/api/users/me", {
+        const res = await axios.get("http://localhost:4000/api/auth/me", {
           headers: {
             Authorization: `Bearer ${auth.accessToken}`,
           },
           withCredentials: true,
         });
+        //console.log(res.data);
         setProfile(res.data);
         setError(null); // Clear errors on success
       } catch (error) {

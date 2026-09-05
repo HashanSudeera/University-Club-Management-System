@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate, Link } from "react-router-dom";
 import {
   Image as ImageIcon,
@@ -96,6 +97,30 @@ const CustomTooltip = ({ active, payload, coordinate }) => {
 
 const UniversityAdminDashboard = () => {
 
+    // 1.Create Status
+    const [stats, setStats] = useState({
+        totalUsers: 0,
+        clubAdmins: 0,
+        clubMembers: 0
+    });
+
+    // 2.   Data Fetch in useEffect
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                // Backend port connection
+                const res = await axios.get('http://localhost:4000/api/admin/user-stats');
+                if (res.data.success) {
+                    setStats(res.data.data);
+                }
+            } catch (error) {
+                console.error("Error fetching dashboard stats:", error);
+            }
+        };
+
+        fetchStats();
+    }, []);
+    
   // Mock data for clubs (kept untouched as requested)
   const clubs = Array(5).fill({
     name: 'Club name',
@@ -118,7 +143,7 @@ const UniversityAdminDashboard = () => {
   ];
 
   // ========================================================
-  // NEW: MOCK DATA FOR UNIVERSITY ADMIN MIDDLE SECTION
+  // MOCK DATA FOR UNIVERSITY ADMIN MIDDLE SECTION
   // ========================================================
   const adminRequests = [
     { initials: 'JC', name: 'Jane Cooper', email: 'jessica.hanson@example.com', date: '5/27/15' },
@@ -184,7 +209,7 @@ const UniversityAdminDashboard = () => {
                   <div className="bg-[#031428] rounded-xl p-5 flex items-center justify-between text-white shadow-sm">
                     <div>
                       <p className="text-xs md:text-sm text-gray-300 font-medium">Total User</p>
-                      <h3 className="text-2xl md:text-3xl font-bold text-[#f0c05a] mt-1">40,689</h3>
+                      <h3 className="text-2xl md:text-3xl font-bold text-[#f0c05a] mt-1">{stats.totalUsers}</h3>
                     </div>
                     <div className="w-12 h-12 bg-[#1e324a] rounded-xl flex items-center justify-center text-[#6882a0]">
                       <Users size={24} />
@@ -194,8 +219,8 @@ const UniversityAdminDashboard = () => {
                   {/* Card 2: Total Club */}
                   <div className="bg-[#031428] rounded-xl p-5 flex items-center justify-between text-white shadow-sm">
                     <div>
-                      <p className="text-xs md:text-sm text-gray-300 font-medium">Total Club</p>
-                      <h3 className="text-2xl md:text-3xl font-bold text-[#f0c05a] mt-1">100</h3>
+                      <p className="text-xs md:text-sm text-gray-300 font-medium">Total Club<br/>Members</p>
+                      <h3 className="text-2xl md:text-3xl font-bold text-[#f0c05a] mt-1">{stats.clubMembers}</h3>
                     </div>
                     <div className="w-12 h-12 bg-[#1e324a] rounded-xl flex items-center justify-center text-[#f0c05a]">
                       <Box size={24} />
@@ -207,6 +232,8 @@ const UniversityAdminDashboard = () => {
                     <div>
                       <p className="text-xs md:text-sm text-gray-300 font-medium leading-tight">Total Completed<br />Events</p>
                       <h3 className="text-2xl md:text-3xl font-bold text-[#f0c05a] mt-1">34</h3>
+                      <p className="text-xs md:text-sm text-gray-300 font-medium leading-tight">Total Club<br/>Admins</p>
+                      <h3 className="text-2xl md:text-3xl font-bold text-[#f0c05a] mt-1">{stats.clubAdmins}</h3>
                     </div>
                     <div className="w-12 h-12 bg-[#0e3b3e] rounded-xl flex items-center justify-center text-[#2dd4bf]">
                       <Bookmark size={24} />
