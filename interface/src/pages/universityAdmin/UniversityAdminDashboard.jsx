@@ -21,7 +21,7 @@ import SmallFullCalendar from '../../components/Dashboard/SmallCalendar.jsx';
 
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
-// 1. ඔයා කොපි කරපු Data ටිකයි Tooltip එකයි මෙතනට (Main component එකට උඩින්) දාන්න.
+// Dummy data
 const dummyClubData = [
   { name: 'Art Club', memberCount: 150 },
   { name: 'Sports Club', memberCount: 120 },
@@ -215,13 +215,14 @@ const UniversityAdminDashboard = () => {
                 </div>
               </div>
 
-              {/* Club status pie chart */}
-              <div className="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-gray-100 w-full">
-                <h3 className="text-lg font-bold mb-8 text-[#0B2447]">Members Overview</h3>
+              {/* PIE CHART */}
+              <div className="bg-blue-50/60 border border-blue-200/80 rounded-2xl p-4 md:p-6 shadow-sm">
+                
+                <h2 className="text-xl md:text-2xl font-bold text-blue-950">Club Members Overwiew</h2>
+                <div className="flex justify-between items-center border-b-2 border-blue-900 mb-6 pb-3"></div>
 
                 <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-24">
                   
-                  {/* Chart Container (280px x 280px) */}
                   <div className="relative h-[280px] w-[280px] flex-shrink-0 flex items-center justify-center">
                     
                     {/*Center totsl mrmbers*/}
@@ -278,9 +279,7 @@ const UniversityAdminDashboard = () => {
                 </div>
               </div>
 
-              {/* ========================================================
-                  2. CLUB ADMIN REQUESTS TABLE
-              ======================================================== */}
+              {/* CLUB ADMIN REQUESTS TABLE */}
               <div className="bg-blue-50/60 border border-blue-200/80 rounded-2xl p-4 md:p-6 shadow-sm">
                 <div className="flex justify-between items-center border-b-2 border-blue-900 mb-6 pb-3">
                   <h2 className="text-xl md:text-2xl font-bold text-blue-950">Club Admin requests</h2>
@@ -318,7 +317,7 @@ const UniversityAdminDashboard = () => {
                         <span className="font-bold truncate">{req.name}</span>
                       </div>
 
-                      {/* Email (Hidden on mobile) */}
+                      {/* Email */}
                       <div className="w-1/3 hidden md:block text-gray-800 truncate pr-2">
                         {req.email}
                       </div>
@@ -342,9 +341,7 @@ const UniversityAdminDashboard = () => {
                 </div>
               </div>
 
-              {/* ========================================================
-                  3. ANNOUNCEMENT FEED SECTION
-              ======================================================== */}
+              {/* ANNOUNCEMENT FEED SECTION */}
               <div className="bg-blue-50/60 border border-blue-200/80 rounded-2xl p-4 md:p-6 shadow-sm">
                 <div className="flex justify-between items-center border-b-2 border-blue-900 mb-6 pb-3">
                   <h2 className="text-xl md:text-2xl font-bold text-blue-950">Announcement</h2>
@@ -388,9 +385,7 @@ const UniversityAdminDashboard = () => {
                 </div>
               </div>
 
-              {/* ========================================================
-                  4. JOINED CLUBS SECTION (Original Section Kept Untouched)
-              ======================================================== */}
+              {/* JOINED CLUBS SECTION */}
               <div className="border-b-2 border-blue-600 mb-6 pb-2 pt-4">
                 <h2 className="text-2xl md:text-3xl font-bold text-blue-600">Joined Clubs</h2>
               </div>
@@ -419,10 +414,10 @@ const UniversityAdminDashboard = () => {
             </div>
           </main>
 
-          {/* Right Sidebar (Calendar & Events) - Kept Untouched */}
+          {/* Right Sidebar (Calendar & Events) */}
           <aside className="w-full lg:w-100 bg-blue-50 shrink-0 p-4 md:p-6 lg:border-l border-t lg:border-t-0 border-blue-100/80 space-y-6 order-2">
 
-            {/* FullCalendar Mini Widget */}
+            {/* Calendar */}
             <div className="max-w-md mx-auto lg:max-w-none">
               <SmallFullCalendar
                 events={calendarEvents}
@@ -430,7 +425,7 @@ const UniversityAdminDashboard = () => {
               />
             </div>
 
-            {/* Upcoming Events Widget */}
+            {/* Upcoming Events */}
             <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 md:p-6 shadow-sm max-w-md mx-auto lg:max-w-none">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg font-bold text-blue-600">Upcoming Events</h3>
