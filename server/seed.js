@@ -4,7 +4,7 @@ import getNextSequence from './utils/generateId.js';
 
 import User from './models/User.js';
 import Membership from './models/Membership.js';
-import Club from './models/ClubPage.js'; // Ensure this matches your actual file name
+import Club from './models/ClubPage.js'; 
 import ClubPost from './models/ClubPost.js';
 import Event from './models/Event.js';
 import EventRegister from './models/EventRegister.js';
@@ -27,13 +27,13 @@ const seedDatabase = async () => {
     ]);
     console.log('Existing data and custom ID counters cleared.');
 
-    // Encrypted password storage[cite: 1]
+    // Encrypted password storage
     const hashedPassword = await bcrypt.hash('Ict@12345', 10); 
 
     // 2. Generate Custom IDs for 9 Dummy Users
     const uIds = await Promise.all(Array.from({ length: 9 }).map(() => getNextSequence('user_id', 'USR')));
 
-    // 3. Create 9 Dummy Users (1 Uni Admin, 3 Club Admins, 5 Club Members)[cite: 1]
+    // 3. Create 9 Dummy Users (1 Uni Admin, 3 Club Admins, 5 Club Members)
     const createdUsers = await User.create([
       // UNI ADMIN (1)
       {
@@ -92,12 +92,12 @@ const seedDatabase = async () => {
     const c2 = await getNextSequence('club_id', 'CLB');
     
     const createdClubs = await Club.create([
-      { club_id: c1, club_name: 'Robotics Society', category: 'Technology', status: 'aproved' },
-      { club_id: c2, club_name: 'Chess Club', category: 'Sports', status: 'aproved' }
+      // clubadmin_id is now defined as a String in the schema[cite: 11]
+      { club_id: c1, club_name: 'Robotics Society', category: 'Technology', status: 'aprove', clubadmin_id: ca1.user_id },
+      { club_id: c2, club_name: 'Chess Club', category: 'Sports', status: 'aprove', clubadmin_id: ca2.user_id }
     ]);
     const [techClub, sportsClub] = createdClubs;
 
-    // 5. Generate IDs & Create Cross-Relationships (Memberships)
     // 5. Generate IDs & Create Cross-Relationships (Memberships)
     const membershipsData = [
       { membership_id: await getNextSequence('membership_id', 'MEM'), user_id: ca1._id, club_id: techClub._id, club_role: 'President' },
@@ -114,6 +114,8 @@ const seedDatabase = async () => {
     // 6. Generate Events, Registrations, Announcements, Posts & Notifications
     const event = await Event.create({
       event_id: await getNextSequence('event_id', 'EVT'),
+      // club_id is now defined as a String in the Event schema[cite: 14]
+      club_id: techClub.club_id,
       title: 'Annual Robotics Hackathon',
       date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       location: 'Main Hall',
@@ -130,6 +132,8 @@ const seedDatabase = async () => {
 
     const announcement = await Announcement.create({
       announcement_id: await getNextSequence('announcement_id', 'ANN'),
+      // club_id is now defined as a String in the Announcement schema[cite: 10]
+      club_id: techClub.club_id,
       title: 'Welcome to the New Semester!',
       description: 'Discover and join extracurricular activities.',
       category: 'General'

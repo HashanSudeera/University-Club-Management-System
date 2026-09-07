@@ -9,6 +9,7 @@ import eventRoutes from "./routes/event.js";
 import eventRegisterRoutes from "./routes/eventRegisterRoutes.js";
 
 import adminRoutes from './routes/admin.js';
+import clubadminRoutes from './routes/clubAdmin.js';
 import clubRoutes from "./routes/club.js";
 
 const app = express();
@@ -35,6 +36,7 @@ app.use("/api/events",eventRoutes);
 app.use("/api/eventRegisters", eventRegisterRoutes);
 
 app.use("/api/admin", adminRoutes);
+app.use("/api/clubadmin", clubadminRoutes);
 
 app.use("/api/auth", authRoutes);
 
