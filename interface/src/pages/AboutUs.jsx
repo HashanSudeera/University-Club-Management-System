@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import clubLinkLogo from '../assets/clublink1.svg';
 
 function AboutUs() {
@@ -48,7 +49,7 @@ function AboutUs() {
             </div>
           </div>
         </div>
-
+        <Footer />
     </div>
   );
 }
