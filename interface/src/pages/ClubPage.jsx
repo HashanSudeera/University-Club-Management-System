@@ -1,6 +1,7 @@
 import React from 'react';
 import TopNavbar from '../components/Dashboard/TopNavbar';
 import SideNavbar from '../components/Dashboard/SideNavbar';
+import {Link} from 'react-router-dom'
 
 function ClubPage() {
   return (
@@ -81,9 +82,10 @@ function ClubPage() {
                     </button>
 
                     {/* Club Manage Button */}
+                    <Link to='/clubmanage'>
                     <button className="bg-[#f8fafc] hover:bg-gray-100 text-gray-700 font-medium px-6 py-2.5 rounded-lg border border-gray-200 transition-colors cursor-pointer shadow-sm text-sm">
                       Manage
-                    </button>
+                    </button></Link>
                   </div>
 
                 </div>

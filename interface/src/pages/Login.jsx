@@ -3,6 +3,8 @@ import loginBg from '../assets/login.jpg';
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react"; // Imported Eye and EyeOff icons
+import Logo from "/clublink.svg";
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -39,7 +41,26 @@ const Login = () => {
   };
 
   return (
-    <div className="flex h-screen w-full overflow-hidden font-sora">
+    <div className="flex h-screen w-full overflow-hidden font-sora relative">
+      
+      {/* Club Link Logo - Absolute Top Left */}
+      <div className="absolute top-8 left-8 z-50 flex items-center gap-3 drop-shadow-md">
+        <Link to="/">
+              <div className="flex items-center gap-2 md:gap-3 absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0">
+                <img src={Logo} alt='Logo' className='w-7 md:w-9 shrink-0' />
+                <div>
+                  <h1 className="text-yellow-500 text-[20px] md:text-[25px] leading-tight font-bold whitespace-nowrap">
+                    Club Link
+                  </h1>
+                  {/* Hides the long subtitle on very small screens so it doesn't break */}
+                  <p className="text-[9px] md:text-[10px] text-blue-100 hidden sm:block leading-none mt-0.5">
+                    University Club Management System
+                  </p>
+                </div>
+              </div>
+              </Link>
+      </div>
+
       <div className="relative hidden lg:flex w-1/2 items-center justify-center bg-blue-900">
         <img
           src={loginBg}
@@ -54,7 +75,8 @@ const Login = () => {
         </div>
       </div>
 
-      <div className="flex w-full lg:w-1/2 items-center justify-center bg-[#022c5e] p-6">
+      <div className="flex w-full lg:w-1/2 items-center justify-center bg-[#022c5e] p-6 relative">
+
         <div className="w-full max-w-md rounded-[2.5rem] bg-white p-12 shadow-2xl">
           <div className="mb-10 flex flex-col items-center">
             <h2 className="text-2xl font-bold flex items-center gap-2 text-gray-800">
@@ -86,11 +108,13 @@ const Login = () => {
                 required
               />
               
+              {/* Added Eye Icons to the toggle button */}
               <button
                 type="button"
-                className="absolute right-0 bottom-2 text-gray-400 hover:text-blue-500"
+                className="absolute right-0 bottom-2 text-gray-400 hover:text-blue-500 transition-colors"
                 onClick={() => setShowPassword(!showPassword)}
               >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
 
