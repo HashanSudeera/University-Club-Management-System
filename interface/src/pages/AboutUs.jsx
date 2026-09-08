@@ -1,54 +1,100 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import clubLinkLogo from '../assets/clublink1.svg';
-
+import Headerimage from '../assets/aboutUs/header.jpg';
+import slideImg1 from '../assets/aboutUs/slideShow1.jpg';
+import slideImg2 from '../assets/aboutUs/slideShow2.jpg'; 
+import slideImg3 from '../assets/aboutUs/slideShow3.jpg'; 
 function AboutUs() {
+
+  const sliderImages = [slideImg1, slideImg2, slideImg3];
+  const [currentIdx, setCurrentIdx] = useState(0);
+
+  //image slide show
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIdx((prevIdx) => (prevIdx + 1) % sliderImages.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [sliderImages.length]);
+
   return (
-    <div>
-      <Navbar />
-       
-       {/* Header Section */}
-        <div className="bg-[#8EA3BA] text-[#1E293B] px-8 py-12 md:px-20 flex flex-col md:flex-row items-center justify-between shadow-sm">
+    <div className="min-h-screen bg-slate-100 flex flex-col justify-between">
+      <div>
+        <Navbar />
+         
+        {/* Header Section */}
+        <div className="relative bg-[#8EA3BA] text-[#1E293B] px-8 py-12 md:px-20 flex flex-col md:flex-row items-center justify-between shadow-sm overflow-hidden">
+          
+          {/* Background image for header */}
+          <div 
+            className="absolute inset-0 z-0 bg-cover bg-center opacity-50"
+            style={{ backgroundImage: `url(${Headerimage})` }}
+          ></div>
 
           {/* Large Logo Placeholder */}
-            <div className="flex-1 flex justify-start items-center">
-                <img 
-                src={clubLinkLogo} 
-                alt="Club Link Logo" 
-                className="w-60 h-auto opacity-70" 
-                />
-            </div>
+          <div className="relative z-10 flex-1 flex justify-start items-center">
+            <img 
+              src={clubLinkLogo} 
+              alt="Club Link Logo" 
+              className="w-60 h-auto opacity-80" 
+            />
+          </div>
           
-          {/* Header Titles */}
-          <div className="text-center md:text-right">
+          <div className="relative z-10 text-center md:text-right mt-4 md:mt-0">
             <h1 className="text-4xl md:text-5xl font-black tracking-tight text-[#0F172A]">About Us</h1>
-            <p className="text-lg md:text-2xl font-medium mt-5 text-[#ffffff]">Your Gateway to Campus Life</p>
+            <p className="text-lg md:text-xl font-medium mt-3 text-[#ffffff]">Your Gateway to Campus Life</p>
           </div>
         </div>
 
-        {/* vertical space */}
-        <div className="max-w-5xl mx-auto py-5 px-6"></div>
-         
-        {/* Description Section */}
-        <div className="bg-slate-300 rounded-xl flex overflow-hidden mx-12 min-h-[300px]">
-          {/* left side description */}
-          <div className="flex-1 p-8">
-            <h3 className="text-2xl font-bold text-slate-900 mb-4">Description</h3>
-            <p className="text-sm text-slate-700 leading-relaxed">
-              The University Club Management System is a web-based platform designed 
-              to safely manage university club activities, and communication between 
-              students and administration. This system provides specialized tools for 
-              student clubs, administrators, and general students.
-            </p>
-          </div>
-          {/* rigth side image */}
-          <div className="flex-1 bg-slate-500 flex justify-center items-center p-6">
-            <div className="w-4/5 h-36 bg-slate-400 rounded-lg flex justify-center items-center">
-              <span className="text-4xl"></span> 
+        {/* Main Content Section */}
+        <div className="max-w-4xl mx-auto px-6 py-12 flex flex-col items-center text-center">
+          
+          {/* Title & Description */}
+          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6">
+            Welcome to Club Link
+          </h2>
+          <p className="text-sm md:text-base text-slate-700 leading-relaxed max-w-2xl mb-10">
+            The University Club Management System is a web-based application designed to digitally manage university clubs, their members, and events through a centralized platform. The system provides structured access control with three primary user roles: University Admin, Club Admin, and Club Members.
+          </p>
+
+          {/* Auto-sliding Image Container */}
+          <div className="w-full max-w-3xl h-72 md:h-96 rounded-2xl overflow-hidden shadow-lg relative bg-slate-300">
+            {sliderImages.map((img, index) => (
+              <div
+                key={index}
+                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                  index === currentIdx ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                }`}
+              >
+                <img 
+                  src={img} 
+                  alt={`Slide ${index + 1}`} 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
+
+            {/* Dots Indicator */}
+            <div className="absolute bottom-4 left-0 right-0 z-20 flex justify-center gap-2">
+              {sliderImages.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentIdx(index)}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    index === currentIdx ? 'bg-white w-6' : 'bg-white/50'
+                  }`}
+                />
+              ))}
             </div>
           </div>
+
         </div>
 
+      </div>
+
+      <Footer />
     </div>
   );
 }
