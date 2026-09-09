@@ -9,29 +9,25 @@ function clubRegister() {
       <Navbar />
 
       <div className="flex flex-1">
-        {/* Sidebar (Left Side) */}
         <SideNavbar />
 
         {/* Main Content Area */}
         <main className="flex-1 flex flex-col">
           
-          {/* Hero Banner Area */}
+          {/* Banner Area */}
           <div className="relative bg-[#0b1f3d] py-16 flex items-center justify-center overflow-hidden">
-            {/* Background Text Watermark (New Club) */}
             <h1 className="absolute text-[11rem] font-black text-white/5 whitespace-nowrap tracking-widest select-none pointer-events-none">
               New Club
             </h1>
-            {/* Main Title */}
             <h2 className="relative text-5xl md:text-6xl font-bold text-[#f5d061] tracking-wide z-10">
               Build Your Legacy
             </h2>
           </div>
 
-          {/* Form and Info Section */}
+          {/* Form Section */}
           <div className="p-8 flex justify-center">
             <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
               
-              {/* Left Form Area */}
               <div className="lg:col-span-2 bg-white p-8 rounded-xl shadow-xl border border-gray-200">
                 <h3 className="text-2xl font-bold mb-8">Register New Club</h3>
 
@@ -55,14 +51,14 @@ function clubRegister() {
                         <option>Sports & Biking</option>
                         <option>Arts & Photography</option>
                       </select>
-                      {/* Custom dropdown arrow */}
+                      {/* dropdown arrow */}
                       <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-600">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                       </div>
                     </div>
                   </div>
 
-                  {/* Club Description Textarea */}
+                  {/* Description Textarea */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Club Description</label>
                     <textarea
@@ -84,7 +80,7 @@ function clubRegister() {
                     </button>
                   </div>
 
-                  {/* Submit Button */}
+                  {/* Button */}
                   <div className="flex justify-center pt-4">
                     <button type="submit" className="bg-[#0b1f3d] text-white px-10 py-3 rounded-md font-bold text-sm hover:bg-blue-950 transition">
                       Submit Registration
