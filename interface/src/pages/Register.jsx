@@ -1,14 +1,13 @@
-import { useState } from "react";
+import { useState } from "react"; // Data store and manage
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
+import axios from "axios"; // Send HTTP requests frontend to backend
 import { Eye, EyeOff } from "lucide-react"; // Imported eye icons
 import Logo from "/clublink.svg";
 
 
 function Register() {
   const navigate = useNavigate();
-  // SINGLE STATE (BEST PRACTICE)
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({ // From state
     firstName: "",
     lastName: "",
     address: "",
@@ -19,7 +18,7 @@ function Register() {
     role: "Club Member",
   });
 
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); // Error State
 
   // State for toggling password visibility
   const [showPassword, setShowPassword] = useState(false);
@@ -43,11 +42,11 @@ function Register() {
 
   // HANDLE SUBMIT
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Stop the page reload
     console.log(formData);
     try {
-      await axios.post("http://localhost:4000/api/auth/register", formData, {
-        withCredentials: true,
+      await axios.post("http://localhost:4000/api/auth/register", formData, { // Send data to backend
+        withCredentials: true, // Send Cookies credentials requests
       });
       navigate("/login");
     } catch (err) {
