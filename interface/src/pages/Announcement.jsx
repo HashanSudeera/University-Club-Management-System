@@ -48,19 +48,19 @@ const Announcements = () => {
   return (
     <div className="min-h-screen bg-blue-50 font-sans flex flex-col">
       
-      {/* 1. Top navbar */}
+      {/*  Top navbar */}
       <TopNavbar />
 
       <div className="flex flex-1 flex-col md:flex-row overflow-hidden">
         
-        {/* 2. Left sidebar */}
+        {/*  Left sidebar */}
         <SideNavbar />
 
-        {/* 3. Main content */}
+        {/*  Main content */}
         <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
           <div className="max-w-6xl mx-auto">
             
-            {/* Outer Container Box (Matches ClubExplore) */}
+            {/* Outer Container Box  */}
             <div className="bg-blue-50/60 border border-blue-200/80 rounded-2xl p-4 md:p-6 lg:p-8 shadow-sm space-y-6">
               
               {/* Title & Add Button Header */}
@@ -136,7 +136,7 @@ const Announcements = () => {
             {/* Form Fields */}
             <div className="flex flex-col gap-5">
               
-              {/* 1. Announcement Title */}
+              {/*  Announcement Title */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Title</label>
                 <input 
@@ -146,7 +146,7 @@ const Announcements = () => {
                 />
               </div>
 
-              {/* 2. Category Selection */}
+              {/*  Category Selection */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Category</label>
                 <div className="relative">
@@ -165,7 +165,7 @@ const Announcements = () => {
                 </div>
               </div>
 
-              {/* 3. Content Textarea */}
+              {/*  Content Textarea */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Content</label>
                 <textarea 
@@ -175,7 +175,7 @@ const Announcements = () => {
                 ></textarea>
               </div>
 
-              {/* 4. Action Button */}
+              {/*  Action Button */}
               <button 
                 onClick={() => setIsOpen(false)} 
                 className="w-full bg-[#031428] hover:bg-slate-800 text-white font-medium text-sm py-3.5 rounded-xl transition-colors mt-2 shadow-sm"

@@ -7,7 +7,7 @@ function ClubPage() {
   return (
     <div className="min-h-screen bg-[#eef1f6] font-sans flex flex-col">
       
-      {/* Top Navigation - Full Width Top */}
+      {/* Top Navigation  */}
       <TopNavbar />
 
       <div className="flex flex-1 flex-col md:flex-row overflow-hidden">
@@ -19,9 +19,9 @@ function ClubPage() {
         <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
           <div className="max-w-6xl mx-auto space-y-6">
             
-            {/* ==========================================
-                1. HEADER SECTION (Banner & Profile)
-                ========================================== */}
+            {/* 
+                HEADER SECTION 
+                 */}
             <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow-sm relative">
               
               {/* Banner Image Container */}
@@ -29,13 +29,13 @@ function ClubPage() {
                 className="w-full h-48 md:h-[240px] bg-cover bg-center rounded-xl relative overflow-hidden bg-gray-200" 
                 style={{ backgroundImage: "url('/sports.jpg')" }}
               >
-                {/* Banner image only - Title has been moved below */}
+                {/* Banner image only  */}
               </div>
               
-              {/* Below Banner Container (Avatar, Desc, Title, Buttons) */}
+              {/* Below Banner Container  */}
               <div className="relative pt-3 pb-2 px-2 flex flex-col lg:flex-row justify-between items-start lg:items-center min-h-[70px] gap-6">
                 
-                {/* Left Side: Avatar, Description, & Title */}
+                {/* Left Side */}
                 <div className="flex items-start">
                   
                   {/* Floating Circular Avatar */}
@@ -92,9 +92,9 @@ function ClubPage() {
               </div>
             </div>
 
-            {/* ==========================================
-                2. CONTENT CARDS (2x2 Grid)
-                ========================================== */}
+            {/* 
+                 CONTENT CARDS 
+                 */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               
               {/* Latest Announcements */}
