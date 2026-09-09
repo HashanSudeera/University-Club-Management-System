@@ -32,16 +32,9 @@ app.use((req, res, next) => {
 //ROUTES
 app.use("/api/auth", authRoutes);
 app.use("/api/events",eventRoutes);
-//app.use("/api/eventRegisters",eventRegisterRoutes);
 app.use("/api/eventRegisters", eventRegisterRoutes);
-
 app.use("/api/admin", adminRoutes);
 app.use("/api/clubadmin", clubadminRoutes);
-
-app.use("/api/auth", authRoutes);
-
-app.use("/api/admin", adminRoutes);
-
 app.use("/api/clubs", clubRoutes);
 
 //connect Mongo database

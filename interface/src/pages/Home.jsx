@@ -99,7 +99,7 @@ function Home() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-12">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl font-bold text-slate-900">Featured Clubs</h2>
-          <Link to="/clubexplore" className="text-sm font-semibold text-sky-700 hover:underline">
+          <Link to="/explore" className="text-sm font-semibold text-sky-700 hover:underline">
             View All Clubs &rarr;
           </Link>
         </div>
@@ -116,8 +116,8 @@ function Home() {
               </div>
             </div>
             <div className="p-5 pt-0">
-              <Link to="/clubpage" className="block text-center w-full py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-50 transition">
-                Find Details
+              <Link to="/club" className="block text-center w-full py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-50 transition">
+                View Details
               </Link>
             </div>
           </div>
@@ -133,7 +133,7 @@ function Home() {
               </div>
             </div>
             <div className="p-5 pt-0">
-              <Link to="/clubpage" className="block text-center w-full py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-50 transition">
+              <Link to="/club" className="block text-center w-full py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-50 transition">
                 View Details
               </Link>
             </div>
@@ -150,7 +150,7 @@ function Home() {
               </div>
             </div>
             <div className="p-5 pt-0">
-              <Link to="/clubpage" className="block text-center w-full py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-50 transition">
+              <Link to="/club" className="block text-center w-full py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-50 transition">
                 View Details
               </Link>
             </div>
