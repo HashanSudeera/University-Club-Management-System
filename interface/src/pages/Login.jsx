@@ -28,7 +28,7 @@ const Login = () => {
 
       setAuth({ accessToken: res.data.accessToken, role: res.data.user.role , user: res.data.user });
       console.log(res.data);
-      navigate("/");
+      navigate('/dashboard');
     } catch (err) {
       if (err.response && err.response.data && err.response.data.error) {
         setError(err.response.data.error);

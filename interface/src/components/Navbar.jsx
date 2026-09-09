@@ -31,8 +31,6 @@ const Navbar = () => {
                 <h1 className="block lg:hidden text-lg font-bold text-white/80 ml-4 uppercase tracking-widest">UCMS</h1>
             </div>
 
-            {/* Middle Navigation Links Section */}
-            {/* Absolute positioning on large screens ensures perfect centering, standard flex on medium screens */}
             <nav className="hidden md:flex items-center gap-6 lg:gap-10 absolute left-1/2 transform -translate-x-1/2 z-0">
                 <Link 
                     to="/" 
