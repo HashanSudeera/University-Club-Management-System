@@ -27,13 +27,13 @@ function AboutUs() {
         {/* Header Section */}
         <div className="relative bg-[#8EA3BA] text-[#1E293B] px-8 py-12 md:px-20 flex flex-col md:flex-row items-center justify-between shadow-sm overflow-hidden">
           
-          {/* Background image for header */}
+          {/* Background image */}
           <div 
             className="absolute inset-0 z-0 bg-cover bg-center opacity-50"
             style={{ backgroundImage: `url(${Headerimage})` }}
           ></div>
 
-          {/* Large Logo Placeholder */}
+          {/* Logo Placeholder */}
           <div className="relative z-10 flex-1 flex justify-start items-center">
             <img 
               src={clubLinkLogo} 
@@ -48,10 +48,7 @@ function AboutUs() {
           </div>
         </div>
 
-        {/* Main Content Section */}
         <div className="max-w-4xl mx-auto px-6 py-12 flex flex-col items-center text-center">
-          
-          {/* Title & Description */}
           <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6">
             Welcome to Club Link
           </h2>
@@ -76,7 +73,7 @@ function AboutUs() {
               </div>
             ))}
 
-            {/* Dots Indicator */}
+            {/* Dot Indicator */}
             <div className="absolute bottom-4 left-0 right-0 z-20 flex justify-center gap-2">
               {sliderImages.map((_, index) => (
                 <button
