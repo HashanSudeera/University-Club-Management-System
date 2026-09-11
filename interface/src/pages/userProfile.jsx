@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Navbar from '../components/Navbar'; // <-- 1. Imported the Navbar
+import Navbar from '../components/Navbar'; 
 
 function UserProfile() {
   const initialFormState = {
