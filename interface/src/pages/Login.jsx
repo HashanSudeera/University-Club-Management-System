@@ -24,7 +24,7 @@ const Login = () => {
         withCredentials: true,
       });
 
-      setAuth({ accessToken: res.data.accessToken, role: res.data.user.role , user: res.data.user });
+      setAuth({ accessToken: res.data.accessToken, role: res.data.user.role, user: res.data.user });
       console.log(res.data);
       navigate("/");
     } catch (err) {
@@ -85,7 +85,7 @@ const Login = () => {
                 placeholder="••••••••"
                 required
               />
-              
+
               <button
                 type="button"
                 className="absolute right-0 bottom-2 text-gray-400 hover:text-blue-500"
