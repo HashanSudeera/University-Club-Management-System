@@ -5,7 +5,8 @@ import {
   createEvent,
   getAllEvents,
   getEventById,
-  registerForEvent
+  updateEvent,
+  deleteEvent,
 } from "../controllers/eventController.js";
 
 const router = express.Router();
@@ -16,6 +17,8 @@ router.get("/:id", getEventById);
 
 // Protected routes (user must be logged in with verifyToken)
 router.post("/create", verifyToken, verifyRole("Club Admin"), createEvent);
-router.post("/:eventId/register", verifyToken, registerForEvent);
+//router.post("/:eventId/register", verifyToken, registerForEvent);
+router.put("/:id", verifyToken, verifyRole("Club Admin"), updateEvent);
+router.delete("/:id", verifyToken, verifyRole("Club Admin"), deleteEvent);
 
 export default router;

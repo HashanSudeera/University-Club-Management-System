@@ -1,5 +1,6 @@
 import EventRegister from "../models/EventRegister.js";
 import Event from "../models/Event.js";
+import getNextSequence from "../utils/generateId.js";
 
 export const registerForEvent = async (req, res) => {
   try {
@@ -39,11 +40,11 @@ export const registerForEvent = async (req, res) => {
     }
 
     // Generate unique registration ID
-    const customRegId = `REG-${existingEvent._id}-${Date.now()}`;
+    const eventReg_id = await getNextSequence("eventReg_id", "REG");
 
     //Persist registration document 
     const newRegistration = new EventRegister({
-      eventReg_id: customRegId,
+      eventReg_id,
       user_id,                        
       event_id: existingEvent._id,
       addons: addons || {},
