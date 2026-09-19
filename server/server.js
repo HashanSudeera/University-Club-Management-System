@@ -12,6 +12,8 @@ import adminRoutes from './routes/admin.js';
 import clubadminRoutes from './routes/clubAdmin.js';
 import clubRoutes from "./routes/club.js";
 
+import userRoutes from "./routes/userRoutes.js";
+
 const app = express();
 app.use(express.json());
 app.use(
@@ -43,6 +45,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.use("/api/clubs", clubRoutes);
+app.use("/api/users", userRoutes);
 
 //connect Mongo database
 mongoose.connect(MONGO_URL)

@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar'; // <-- 1. Imported the Navbar
+import React, { useState, useEffect } from 'react'; // add useEffect  
+import Navbar from '../components/Navbar'; 
+import axios from 'axios';
+
 
 function UserProfile() {
   const initialFormState = {
@@ -12,6 +16,33 @@ function UserProfile() {
 
   const [formData, setFormData] = useState(initialFormState);
 
+  // show current data on frontend in database
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userId = localStorage.getItem("userId"); // ඔයාගේ ක්‍රමයට ID එක ගන්න
+      if (!userId) return; // ID එකක් නැත්නම් මුකුත් කරන්නේ නෑ
+
+      try {
+        // Backend එකෙන් අදාල යූසර්ගේ දත්ත ඉල්ලනවා
+        const response = await axios.get(`http://localhost:5000/api/users/profile/${userId}`);
+        const userData = response.data;
+        
+        // ලැබුණු දත්ත අපේ form එකේ state එකට සෙට් කරනවා
+        setFormData({
+          firstName: userData.firstName || '',
+          lastName: userData.lastName || '',
+          phone: userData.phone || '',
+          universityEmail: userData.universityEmail || '',
+          address: userData.address || ''
+        });
+      } catch (error) {
+        console.error('Data load weddi error ekak:', error);
+      }
+    };
+    
+    fetchUserData(); // function call
+  }, []); 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -20,10 +51,33 @@ function UserProfile() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Updated Profile Data:', formData);
-  };
+  const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        // වැදගත්: Backend එකට User ID එකක් ඕනේ අදාල කෙනාව හොයාගන්න.
+        // දැනට ලොග් වෙලා ඉන්න කෙනාගේ ID එක Local Storage එකෙන් හෝ Context එකෙන් ගන්න.
+        // උදා: const userId = localStorage.getItem("userId"); 
+        const userId = "ඔයාගේ_USER_ID_එක_මෙතන_එන්න_ඕනේ"; 
+
+        // යවන දත්ත ගොන්න (formData ටිකයි, userId එකයි)
+        const payload = {
+          ...formData,
+          userId: userId 
+        };
+
+        // අර අපි හදපු backend route එකට PUT request එක යවනවා
+        const response = await axios.put('http://localhost:5000/api/users/update-profile', payload);
+        
+        if (response.status === 200) {
+          alert('Profile update successfully!');
+          console.log('Updated DB Data:', response.data);
+        }
+
+      } catch (error) {
+        console.error('Update weddi error ekak awa:', error);
+        alert('Error, Try again !');
+      }
+    };
 
   const handleClearAll = () => {
     setFormData(initialFormState);
