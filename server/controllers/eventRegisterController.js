@@ -1,5 +1,6 @@
 import EventRegister from "../models/EventRegister.js";
 import Event from "../models/Event.js";
+import getNextSequence from "../utils/generateId.js";
 
 export const registerForEvent = async (req, res) => {
   try {
@@ -39,11 +40,11 @@ export const registerForEvent = async (req, res) => {
     }
 
     // Generate unique registration ID
-    const customRegId = `REG-${existingEvent._id}-${Date.now()}`;
+    const eventReg_id = await getNextSequence("eventReg_id", "REG");
 
     //Persist registration document 
     const newRegistration = new EventRegister({
-      eventReg_id: customRegId,
+      eventReg_id,
       user_id,                        
       event_id: existingEvent._id,
       addons: addons || {},
@@ -68,5 +69,55 @@ export const registerForEvent = async (req, res) => {
       success: false,
       message: error.message,
     });
+  }
+};
+// Cancel Registration
+export const cancelRegistration = async (req, res) => {
+  try {
+    const { regId } = req.params;
+
+    const registration = await EventRegister.findById(regId);
+    if (!registration) {
+      return res.status(404).json({ success: false, message: "Registration not found" });
+    }
+
+    // Remove user from event participants
+    await Event.findByIdAndUpdate(
+      registration.event_id,
+      { $pull: { participants: registration.user_id } }
+    );
+
+    // Delete the registration
+    await EventRegister.findByIdAndDelete(regId);
+
+    res.status(200).json({ success: true, message: "Registration cancelled successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Get My Registrations
+export const getMyRegistrations = async (req, res) => {
+  try {
+    const user_id = req.user.id;
+
+    const registrations = await EventRegister.find({ user_id }).populate("event_id");
+
+    res.status(200).json({ success: true, data: registrations });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Get Event Participants (Club Admin)
+export const getEventParticipants = async (req, res) => {
+  try {
+    const { eventId } = req.params;
+
+    const participants = await EventRegister.find({ event_id: eventId }).populate("user_id", "firstName lastName email");
+
+    res.status(200).json({ success: true, data: participants });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };

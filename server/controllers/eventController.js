@@ -1,12 +1,16 @@
 import Event from "../models/Event.js";
 import EventRegister from "../models/EventRegister.js";
+import getNextSequence from "../utils/generateId.js";
 
 // Create Event
 export const createEvent = async (req, res) => {
   try {
-    const { date, location, title, poster_path, capacity, status, type } = req.body;
+    const {club_id,date, location, title, poster_path, capacity, status, type } = req.body;
+    const event_id = await getNextSequence("event_id", "EVT");
 
     const newEvent = new Event({
+      event_id,
+      club_id,
       date,
       location,
       title,
@@ -45,34 +49,93 @@ export const getEventById = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// Register for Event
-export const registerForEvent = async (req, res) => {
+  // Update Event
+export const updateEvent = async (req, res) => {
   try {
-    const { eventId } = req.params;
-    const { addons } = req.body;
-    const user_id = req.user.id; // Extracted from verifyToken middleware
+    const { id } = req.params;
+    const updates = req.body;
 
-    const event = await Event.findById(eventId);
-    if (!event) {
+    const updatedEvent = await Event.findByIdAndUpdate(
+      id,
+      updates,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedEvent) {
       return res.status(404).json({ success: false, message: "Event not found" });
     }
 
-    const registration = new EventRegister({
-      user_id,
-      addons
-    });
-    const savedRegistration = await registration.save();
-
-    event.participants.push(savedRegistration._id);
-    await event.save();
-
-    res.status(201).json({
-      success: true,
-      message: "Successfully registered for event",
-      data: savedRegistration
-    });
+    res.status(200).json({ success: true, data: updatedEvent });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+// Delete Event
+export const deleteEvent = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedEvent = await Event.findByIdAndDelete(id);
+
+    if (!deletedEvent) {
+      return res.status(404).json({ success: false, message: "Event not found" });
+    }
+
+    res.status(200).json({ success: true, message: "Event deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Cancel Registration
+export const cancelRegistration = async (req, res) => {
+  try {
+    const { regId } = req.params;
+
+    const registration = await EventRegister.findById(regId);
+    if (!registration) {
+      return res.status(404).json({ success: false, message: "Registration not found" });
+    }
+
+    // Remove user from event participants
+    await Event.findByIdAndUpdate(
+      registration.event_id,
+      { $pull: { participants: registration.user_id } }
+    );
+
+    // Delete the registration
+    await EventRegister.findByIdAndDelete(regId);
+
+    res.status(200).json({ success: true, message: "Registration cancelled successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Get My Registrations
+export const getMyRegistrations = async (req, res) => {
+  try {
+    const user_id = req.user.id;
+
+    const registrations = await EventRegister.find({ user_id }).populate("event_id");
+
+    res.status(200).json({ success: true, data: registrations });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Get Event Participants (Club Admin)
+export const getEventParticipants = async (req, res) => {
+  try {
+    const { eventId } = req.params;
+
+    const participants = await EventRegister.find({ event_id: eventId }).populate("user_id", "firstName lastName email");
+
+    res.status(200).json({ success: true, data: participants });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
