@@ -7,7 +7,12 @@ import {
   refreshToken,
   register,
   getProfile,
+  generate_OTP,
+  verifyOTP,
+  resetPassword,
 } from "../controllers/authController.js";
+
+import { registerMail , sendOTPMail } from '../controllers/mailer.js';
 
 const router = express.Router();
 
@@ -16,6 +21,16 @@ router.post("/login", login);
 router.post("/logout", logout);
 router.get("/refresh", refreshToken);
 router.get("/me", verifyToken, getProfile);
+
+//email verifications
+router.get("/generateOTP",generate_OTP);
+router.post("/verifyOTP",verifyOTP);
+
+router.put("/resetpwd",resetPassword);
+
+router.post('/registermail',registerMail );
+router.post('/sendOTPMail',sendOTPMail );
+
 
 
 export default router;

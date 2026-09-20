@@ -1,12 +1,33 @@
+//models
 import User from "../models/User.js";
+import OTP from "../models/OTP.js";
+
+//authentication librarys
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import validator from 'validator';
+
+//env 
 import { REFRESH_TOKEN_SECRET, ACCESS_TOKEN_SECRET } from "../config.js";
+
+//utilits
 import getNextSequence from "../utils/generateId.js";
+import otpGenerator from 'otp-generator';
 
 
-//register user
+/** POST: http://localhost:4000/api/auth/register
+ * @param: {
+  "user_id": "USR-0010",
+  "firstName": "Sudeera",
+  "lastName": "Perera",
+  "address": "Bataduwa,Galle",
+  "email": "sudeera@gmail.com",
+  "password": "Abc12345#",
+  "confirmPassword":"Abc12345#",
+  "role": "Club Member",
+  "academicYear": "1st Year"
+}
+*/
 const register = async (req, res) => {
   try {
     const { firstName, lastName, address, email, password, confirmPassword, role, academicYear } = req.body;
@@ -67,7 +88,14 @@ const register = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-//login user
+
+
+/** POST: http://localhost:4000/api/auth/login
+ * @param: {
+  "email": "cm4@gmail.com",
+  "password": "Ict@1234567"
+}
+*/
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -126,6 +154,8 @@ const login = async (req, res) => {
   }
 };
 
+
+//GET : http://localhost:4000/api/auth/refresh
 const refreshToken = async (req, res) => {
   const token = req.cookies.refreshToken;
 
@@ -166,6 +196,7 @@ const refreshToken = async (req, res) => {
   }
 };
 
+//POST : http://localhost:4000/api/auth/logout
 const logout = (req, res) => {
   try {
     res.clearCookie("refreshToken", {
@@ -180,6 +211,7 @@ const logout = (req, res) => {
   }
 };
 
+
 const getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
@@ -193,4 +225,86 @@ const getProfile = async (req, res) => {
   }
 };
 
-export { register, login, refreshToken, logout, getProfile };
+/** GET: http://localhost:4000/api/auth/generateOTP
+ * @param: {
+    "email": "cm4@gmail.com"
+}
+*/
+const generate_OTP = async (req, res) => {
+  try {
+    const { email } = req.body;
+    
+    // Check if user exists before sending OTP
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const code = otpGenerator.generate(6, { lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false });
+    
+    // Store in centralized database instead of app.locals
+    await OTP.create({ email, code });
+
+    // TODO: Integrate your Nodemailer transporter here to email the code
+    
+    res.status(201).json({ message: "OTP generated and saved successfully", code }); // Remove 'code' in production
+  } catch (error) {
+    res.status(500).json({ error: "Failed to generate OTP" });
+  }
+};
+
+/** POST: http://localhost:4000/api/auth/verifyOTP
+ * @param: {
+    "email": "ua@gmail.com",
+    "code": "559375"
+}
+*/
+const verifyOTP = async (req, res) => {
+  try {
+    const { email, code } = req.body;
+    
+    const validOtp = await OTP.findOne({ email, code });
+    if (!validOtp) {
+      return res.status(400).json({ error: "Invalid or expired OTP" });
+    }
+
+    // Clean up OTP after successful verification
+    await OTP.deleteOne({ _id: validOtp._id });
+    
+    // Return a temporary token or flag to allow the client to proceed to password reset
+    res.status(200).json({ message: "Verify Successfully!", canResetPassword: true });
+  } catch (error) {
+    res.status(500).json({ error: "Verification failed" });
+  }
+};
+
+/** PUT: http://localhost:4000/api/auth/resetpwd
+ * @param: {
+  "email": "cm4@gmail.com",
+  "password": "Ict@1234567"
+}
+*/
+const resetPassword = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "Username not Found" });
+    }
+
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    await User.updateOne(
+      { email: user.email },
+      { password: hashedPassword }
+    );
+
+    return res.status(201).json({ message: "Record Updated Successfully!" });
+  } catch (error) {
+    return res.status(500).json({ error: "Unable to reset password" });
+  }
+};
+
+
+
+export { register, login, refreshToken, logout, getProfile ,generate_OTP , verifyOTP , resetPassword};

@@ -14,13 +14,16 @@ import ClubExplore from "./pages/ClubExplore";
 import ClubPage from "./pages/ClubPage";
 import Announcement from "./pages/Announcement";
 import AboutUs from "./pages/AboutUs";
-import UserProfile from "./pages/userProfile";
+import UserProfile from "./pages/UserProfile";
 import EventCalendar from "./pages/EventCalendar";
 import CreateEvent from "./pages/CreateEvent";
 import ClubRegister from "./pages/ClubRegister";
 import ClubadminRequest from "./pages/universityAdmin/ClubadminRequest";
 import ClubManage from "./pages/ClubManage";
 import ClubMemberManage from "./pages/ClubMemberManage";
+import OTPVerification from "./pages/OTPVerification";
+import ResetPassword from "./pages/ResetPassword";
+
 
 function App() {
   return (
@@ -49,6 +52,23 @@ function App() {
               </PublicRoute>
             }
           />
+          <Route
+            path="/resetPassword"
+            element={
+              <PublicRoute>
+                <ResetPassword />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/OTPVerification"
+            element={
+              <PublicRoute>
+                <OTPVerification />
+              </PublicRoute>
+            }
+          />
+
 
           <Route
             path="/userprofile"
