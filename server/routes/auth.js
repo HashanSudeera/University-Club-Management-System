@@ -23,7 +23,7 @@ router.get("/refresh", refreshToken);
 router.get("/me", verifyToken, getProfile);
 
 //email verifications
-router.get("/generateOTP",generate_OTP);
+router.post("/generateOTP",generate_OTP);
 router.post("/verifyOTP",verifyOTP);
 
 router.put("/resetpwd",resetPassword);

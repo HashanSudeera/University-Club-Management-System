@@ -14,7 +14,7 @@ const OTPVerification = () => {
   // Multi-step state
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
-  
+
   // OTP state
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [error, setError] = useState(null);
@@ -56,14 +56,35 @@ const OTPVerification = () => {
       setError("Please enter your email address.");
       return;
     }
-    
+
     try {
-      // TODO: Replace with your actual endpoint to SEND the OTP to the email
-      // await axios.post("http://localhost:4000/api/auth/send-otp", { email });
-      
+      // 1. Generate the OTP
+      // Using 'params' sends the email as a query parameter, which is standard for GET requests.
+      const otpResponse = await axios.post("http://localhost:4000/api/auth/generateOTP", {
+        email: email
+      });
+
+      // Extract the OTP from your backend's response.
+      // (Adjust 'otpResponse.data.otp' if your backend names the key differently, like '.code')
+      const generatedOtp = otpResponse.data.code;
+
+      console.log(generatedOtp);
+
+      if (!generatedOtp) {
+        throw new Error("Failed to generate OTP from server");
+      }
+
+      // 2. Send the generated OTP via Email
+      await axios.post("http://localhost:4000/api/auth/sendOTPMail", {
+        userEmail: email,
+        otp: generatedOtp
+      });
+
+      // 3. Move to the next step on success
       setError(null);
       setStep(2);
       setTimeLeft(300); // Start 5 min countdown
+
     } catch (err) {
       handleErrorResponse(err);
     }
@@ -71,11 +92,30 @@ const OTPVerification = () => {
 
   const handleResendOTP = async () => {
     try {
-      // TODO: Replace with your actual endpoint to RESEND the OTP
-      // await axios.post("http://localhost:4000/api/auth/send-otp", { email });
+      // 1. Generate a new OTP
+      const otpResponse = await axios.post("http://localhost:4000/api/auth/generateOTP", {
+        email: email
+      });
+
       
+      const generatedOtp = otpResponse.data.code;
+
+      console.log(generatedOtp);
+
+      if (!generatedOtp) {
+        throw new Error("Failed to generate a new OTP from the server");
+      }
+
+      // 2. Send the newly generated OTP via Email
+      await axios.post("http://localhost:4000/api/auth/sendOTPMail", {
+        userEmail: email,
+        otp: generatedOtp
+      });
+
+      // 3. Reset UI state on success
       setError(null);
       setTimeLeft(300); // Reset timer to 5 minutes
+
     } catch (err) {
       handleErrorResponse(err);
     }
@@ -110,16 +150,19 @@ const OTPVerification = () => {
     }
 
     try {
-      // TODO: Update this endpoint to your actual OTP verification route
-      const res = await axios.post("http://localhost:4000/api/auth/verify-otp", {
-        email: email, // Sending email along with OTP is common practice
-        otp: otpCode
-      }, {
-        withCredentials: true,
+      // 1. Verify the OTP using the updated endpoint and payload
+      await axios.post("http://localhost:4000/api/auth/verifyOTP", {
+        email: email,
+        code: otpCode // Updated key from 'otp' to 'code' to match your backend API
       });
 
-      setAuth({ accessToken: res.data.accessToken, role: res.data.user.role, user: res.data.user });
-      navigate('/dashboard');
+      // 2. Clear any previous errors
+      setError(null);
+
+      // 3. Navigate to the reset password route
+      // We pass the email in the navigation state so the next page knows whose password to update
+      navigate('/resetPassword', { state: { email } });
+
     } catch (err) {
       handleErrorResponse(err);
     }
@@ -146,7 +189,7 @@ const OTPVerification = () => {
 
   return (
     <div className="flex h-screen w-full overflow-hidden font-sora relative">
-      
+
       {/* Club Link Logo */}
       <div className="absolute top-8 left-8 z-50 flex items-center gap-3 drop-shadow-md">
         <Link to="/">
@@ -180,7 +223,7 @@ const OTPVerification = () => {
       </div>
 
       {/* RIGHT SIDE (Interactive Grid Background) */}
-      <div 
+      <div
         className="relative flex w-full lg:w-1/2 items-center justify-center bg-blue-800 p-6 overflow-hidden"
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovered(true)}
@@ -191,9 +234,8 @@ const OTPVerification = () => {
 
         {/* Hover Spotlight Layer */}
         <div
-          className={`pointer-events-none absolute inset-0 transition-opacity duration-300 ease-in-out ${
-            isHovered ? "opacity-100" : "opacity-0"
-          }`}
+          className={`pointer-events-none absolute inset-0 transition-opacity duration-300 ease-in-out ${isHovered ? "opacity-100" : "opacity-0"
+            }`}
           style={{
             background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(59, 130, 246, 0.25), transparent 40%)`,
           }}
@@ -201,13 +243,13 @@ const OTPVerification = () => {
 
         {/* Form Container */}
         <div className="relative z-10 w-full max-w-md rounded-[2.5rem] bg-white p-12 shadow-2xl transition-all duration-500">
-          
+
           {/* STEP 1: ENTER EMAIL */}
           {step === 1 && (
             <>
               <div className="mb-10 flex flex-col items-center">
                 <h2 className="text-2xl font-bold flex items-center gap-2 text-gray-800">
-                  <Mail size={28} className="text-blue-600"/> Reset Password
+                  <Mail size={28} className="text-blue-600" /> Reset Password
                 </h2>
                 <p className="text-gray-400 text-sm mt-2 text-center">
                   Enter your university email address to receive a verification code.
@@ -249,13 +291,13 @@ const OTPVerification = () => {
             <>
               <div className="mb-10 flex flex-col items-center">
                 <h2 className="text-2xl font-bold flex items-center gap-2 text-gray-800">
-                  <ShieldCheck size={28} className="text-blue-600"/> Verify OTP
+                  <ShieldCheck size={28} className="text-blue-600" /> Verify OTP
                 </h2>
                 <p className="text-gray-400 text-sm mt-2 text-center">
-                  We sent a 6-digit verification code to <br/> <span className="font-semibold text-gray-700">{email}</span>
+                  We sent a 6-digit verification code to <br /> <span className="font-semibold text-gray-700">{email}</span>
                 </p>
-                <button 
-                  onClick={() => setStep(1)} 
+                <button
+                  onClick={() => setStep(1)}
                   className="text-xs text-blue-600 hover:underline mt-1 font-semibold"
                 >
                   Change Email
@@ -263,7 +305,7 @@ const OTPVerification = () => {
               </div>
 
               <form onSubmit={handleVerifySubmit} className="space-y-8">
-                
+
                 {/* OTP Input Group */}
                 <div className="flex justify-between gap-2">
                   {otp.map((data, index) => (
@@ -281,16 +323,16 @@ const OTPVerification = () => {
                   ))}
                 </div>
 
-                <div className="flex justify-center mt-4"> 
+                <div className="flex justify-center mt-4">
                   <span className="text-sm text-gray-500">
-                    Didn't receive code? 
+                    Didn't receive code?
                     {timeLeft > 0 ? (
                       <span className="text-gray-400 font-bold ml-1">
                         Resend in {formatTime(timeLeft)}
                       </span>
                     ) : (
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         onClick={handleResendOTP}
                         className="text-blue-600 font-bold hover:underline ml-1"
                       >
