@@ -291,6 +291,10 @@ const resetPassword = async (req, res) => {
       return res.status(404).json({ error: "Username not Found" });
     }
 
+    if (!validator.isStrongPassword(password)) {
+      return res.status(500).json({ error: "Password not strong enough"});
+    }
+
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 

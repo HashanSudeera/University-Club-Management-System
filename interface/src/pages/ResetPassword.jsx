@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import { Eye, EyeOff, Lock } from "lucide-react";
+import toast, { Toaster } from 'react-hot-toast'; // Import hot-toast
+
+// Alias the helper function to avoid colliding with the component name
+import { updatePassword } from "../helper/helper.js"; 
 import loginBg from '../assets/login.jpg';
-import { useAuth } from "../context/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
-import { Eye, EyeOff , Lock} from "lucide-react";
 import Logo from "/clublink.svg";
 
 const ResetPassword = () => {
@@ -12,38 +14,44 @@ const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
-  const { setAuth } = useAuth();
   const navigate = useNavigate();
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
+  const location = useLocation();
 
-  // Spotlight effect states for the right side
+  // Retrieve the email passed from the OTPVerification page via navigate state
+  const email = location.state?.email;
+
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
+  // Security check: If someone navigates to this page directly without an email in state, send them to login
+  useEffect(() => {
+    if (!email) {
+      navigate('/login');
+    }
+  }, [email, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
 
-    // Basic Validation
+    // Basic Validation via Toast
     if (password.length < 6) {
-      setError("Password must be at least 6 characters long.");
+      toast.error("Password must be at least 6 characters long.");
       return;
     }
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      toast.error("Passwords do not match.");
       return;
     }
 
-    try {
-      // Update this endpoint to your actual change-password route
-      const res = await axios.post("http://localhost:4000/api/auth/change-password", {
-        password: password
-      }, {
-        withCredentials: true,
-      });
+    // Trigger loading toast
+    const toastId = toast.loading("Updating password...");
 
-      setSuccess(true);
+    try {
+      // Pass the email from router state and the new password to your API
+      await updatePassword(email, password);
+
+      // Update toast to success
+      toast.success("Password updated successfully! Redirecting...", { id: toastId });
       
       // Redirect to login after a short delay
       setTimeout(() => {
@@ -51,17 +59,18 @@ const ResetPassword = () => {
       }, 2000);
 
     } catch (err) {
-      if (err.response && err.response.data && err.response.data.error) {
-        setError(err.response.data.error);
+      // Extract error message and update toast to error
+      let errorMessage = "Something went wrong. Please try again.";
+      if (err.response?.data?.error) {
+        errorMessage = err.response.data.error;
       } else if (err.message) {
-        setError(err.message);
-      } else {
-        setError("Something went wrong. Please try again.");
+        errorMessage = err.message;
       }
+      
+      toast.error(errorMessage, { id: toastId });
     }
   };
 
-  // TRACK MOUSE POSITION FOR THE GRID SPOTLIGHT
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     setMousePos({
@@ -70,10 +79,16 @@ const ResetPassword = () => {
     });
   };
 
+  // If email is missing, we render nothing briefly while the useEffect redirects
+  if (!email) return null; 
+
   return (
     <div className="flex h-screen w-full overflow-hidden font-sora relative">
       
-      {/* Club Link Logo - Absolute Top Left */}
+      {/* Add the Toaster here for top-right notifications */}
+      <Toaster position="top-right" reverseOrder={false} />
+
+      {/* Club Link Logo */}
       <div className="absolute top-8 left-8 z-50 flex items-center gap-3 drop-shadow-md">
         <Link to="/">
           <div className="flex items-center gap-2 md:gap-3 absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0">
@@ -112,10 +127,8 @@ const ResetPassword = () => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* CSS Grid Pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:40px_40px]" />
 
-        {/* Hover Spotlight Layer */}
         <div
           className={`pointer-events-none absolute inset-0 transition-opacity duration-300 ease-in-out ${
             isHovered ? "opacity-100" : "opacity-0"
@@ -129,16 +142,15 @@ const ResetPassword = () => {
         <div className="relative z-10 w-full max-w-md rounded-[2.5rem] bg-white p-12 shadow-2xl">
           <div className="mb-10 flex flex-col items-center">
             <h2 className="text-2xl font-bold flex items-center gap-2 text-gray-800">
-              <span role="img" aria-label="lock"><Lock/></span> Reset Password
+              <span role="img" aria-label="lock"><Lock size={24} className="text-blue-600" /></span> Reset Password
             </h2>
             <p className="text-gray-400 text-sm mt-2 text-center">
-              Create a new strong password for your account.
+              Create a new strong password for <span className="font-semibold text-gray-600">{email}</span>.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-8">
             
-            {/* New Password Input */}
             <div className="border-b border-gray-300 relative">
               <label className="block text-xs text-gray-400 uppercase font-semibold">New Password</label>
               <input
@@ -158,7 +170,6 @@ const ResetPassword = () => {
               </button>
             </div>
 
-            {/* Confirm Password Input */}
             <div className="border-b border-gray-300 relative">
               <label className="block text-xs text-gray-400 uppercase font-semibold">Confirm Password</label>
               <input
@@ -181,20 +192,6 @@ const ResetPassword = () => {
             <button type="submit" className="w-full rounded-xl bg-slate-800 py-4 text-white font-bold hover:bg-slate-700 transition duration-300 shadow-lg">
               Update Password
             </button>
-
-            {/* Error Message */}
-            {error && (
-              <div className="bg-red-100 border-red-500 border-2 rounded-2xl p-2 text-red-600 text-[14px] font-bold text-center">
-                {error}
-              </div>
-            )}
-            
-            {/* Success Message */}
-            {success && (
-              <div className="bg-green-100 border-green-500 border-2 rounded-2xl p-2 text-green-600 text-[14px] font-bold text-center">
-                Password updated successfully! Redirecting...
-              </div>
-            )}
           </form>
         </div>
       </div>

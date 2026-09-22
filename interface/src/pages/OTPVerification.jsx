@@ -1,40 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import loginBg from '../assets/login.jpg';
-import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
-import Logo from "/clublink.svg";
 import { Mail, ShieldCheck } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import toast, { Toaster } from 'react-hot-toast'; // Import toast and Toaster
+
+// Import your new helper functions
+import { generateOTP, sendOTPMail, verifyOTPCode } from "../helper/helper.js"; 
+
+import loginBg from '../assets/login.jpg';
+import Logo from "/clublink.svg";
 
 const OTPVerification = () => {
-  // Navigation & Auth
   const { setAuth } = useAuth();
   const navigate = useNavigate();
 
-  // Multi-step state
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
-
-  // OTP state
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [error, setError] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(300); 
 
-  // Timer state
-  const [timeLeft, setTimeLeft] = useState(300); // 300 seconds = 5 minutes
-
-  // Spotlight effect states for the right side
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
-  // ----------------------------------------------------
-  // Timer Logic
-  // ----------------------------------------------------
   useEffect(() => {
     let timerId;
     if (step === 2 && timeLeft > 0) {
-      timerId = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 1000);
+      timerId = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
     }
     return () => {
       if (timerId) clearInterval(timerId);
@@ -47,9 +39,6 @@ const OTPVerification = () => {
     return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
-  // ----------------------------------------------------
-  // Handlers
-  // ----------------------------------------------------
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     if (!email) {
@@ -57,86 +46,58 @@ const OTPVerification = () => {
       return;
     }
 
+    // 1. Trigger the loading toast
+    const toastId = toast.loading("Sending OTP...");
+
     try {
-      // 1. Generate the OTP
-      // Using 'params' sends the email as a query parameter, which is standard for GET requests.
-      const otpResponse = await axios.post("http://localhost:4000/api/auth/generateOTP", {
-        email: email
-      });
-
-      // Extract the OTP from your backend's response.
-      // (Adjust 'otpResponse.data.otp' if your backend names the key differently, like '.code')
-      const generatedOtp = otpResponse.data.code;
-
-      console.log(generatedOtp);
+      // Generate OTP
+      const data = await generateOTP(email);
+      const generatedOtp = data.code;
 
       if (!generatedOtp) {
         throw new Error("Failed to generate OTP from server");
       }
 
-      // 2. Send the generated OTP via Email
-      await axios.post("http://localhost:4000/api/auth/sendOTPMail", {
-        userEmail: email,
-        otp: generatedOtp
-      });
+      // Send OTP Mail
+      await sendOTPMail(email, generatedOtp);
 
-      // 3. Move to the next step on success
+      // 2. Update toast to success
+      toast.success("OTP sent successfully!", { id: toastId });
+
+      // Update UI
       setError(null);
       setStep(2);
-      setTimeLeft(300); // Start 5 min countdown
-
+      setTimeLeft(300); 
     } catch (err) {
+      // 3. Update toast to error
+      toast.error("Failed to send OTP. Please try again.", { id: toastId });
       handleErrorResponse(err);
     }
   };
 
   const handleResendOTP = async () => {
+    // 1. Trigger the loading toast
+    const toastId = toast.loading("Resending OTP...");
+
     try {
-      // 1. Generate a new OTP
-      const otpResponse = await axios.post("http://localhost:4000/api/auth/generateOTP", {
-        email: email
-      });
-
-      
-      const generatedOtp = otpResponse.data.code;
-
-      console.log(generatedOtp);
+      const data = await generateOTP(email);
+      const generatedOtp = data.code;
 
       if (!generatedOtp) {
         throw new Error("Failed to generate a new OTP from the server");
       }
 
-      // 2. Send the newly generated OTP via Email
-      await axios.post("http://localhost:4000/api/auth/sendOTPMail", {
-        userEmail: email,
-        otp: generatedOtp
-      });
+      await sendOTPMail(email, generatedOtp);
 
-      // 3. Reset UI state on success
+      // 2. Update toast to success
+      toast.success("OTP resend successfully!", { id: toastId });
+
       setError(null);
-      setTimeLeft(300); // Reset timer to 5 minutes
-
+      setTimeLeft(300);
     } catch (err) {
+      // 3. Update toast to error
+      toast.error("Failed to resend OTP.", { id: toastId });
       handleErrorResponse(err);
-    }
-  };
-
-  const handleOtpChange = (element, index) => {
-    if (isNaN(element.value)) return false;
-
-    // Update the specific OTP box value
-    setOtp([...otp.map((d, idx) => (idx === index ? element.value : d))]);
-
-    // Automatically focus the next input field if a number is entered
-    if (element.nextSibling && element.value) {
-      element.nextSibling.focus();
-    }
-  };
-
-  const handleKeyDown = (e, index) => {
-    // Move to the previous input field on Backspace if the current field is empty
-    if (e.key === "Backspace" && !otp[index] && e.target.previousSibling) {
-      e.target.previousSibling.focus();
     }
   };
 
@@ -149,22 +110,34 @@ const OTPVerification = () => {
       return;
     }
 
+    const toastId = toast.loading("Verifying code...");
+
     try {
-      // 1. Verify the OTP using the updated endpoint and payload
-      await axios.post("http://localhost:4000/api/auth/verifyOTP", {
-        email: email,
-        code: otpCode // Updated key from 'otp' to 'code' to match your backend API
-      });
+      // Verify the OTP
+      await verifyOTPCode(email, otpCode);
 
-      // 2. Clear any previous errors
+      toast.success("Verification successful!", { id: toastId });
+
+      // Clear errors and Navigate
       setError(null);
-
-      // 3. Navigate to the reset password route
-      // We pass the email in the navigation state so the next page knows whose password to update
       navigate('/resetPassword', { state: { email } });
-
     } catch (err) {
+      toast.error("Invalid or expired OTP.", { id: toastId });
       handleErrorResponse(err);
+    }
+  };
+
+  const handleOtpChange = (element, index) => {
+    if (isNaN(element.value)) return false;
+    setOtp([...otp.map((d, idx) => (idx === index ? element.value : d))]);
+    if (element.nextSibling && element.value) {
+      element.nextSibling.focus();
+    }
+  };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace" && !otp[index] && e.target.previousSibling) {
+      e.target.previousSibling.focus();
     }
   };
 
@@ -178,7 +151,6 @@ const OTPVerification = () => {
     }
   };
 
-  // TRACK MOUSE POSITION FOR THE GRID SPOTLIGHT
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     setMousePos({
@@ -189,6 +161,9 @@ const OTPVerification = () => {
 
   return (
     <div className="flex h-screen w-full overflow-hidden font-sora relative">
+      
+      {/* ADD THE TOASTER HERE for top-right notifications */}
+      <Toaster position="top-right" reverseOrder={false} />
 
       {/* Club Link Logo */}
       <div className="absolute top-8 left-8 z-50 flex items-center gap-3 drop-shadow-md">
@@ -229,21 +204,16 @@ const OTPVerification = () => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* CSS Grid Pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:40px_40px]" />
 
-        {/* Hover Spotlight Layer */}
         <div
-          className={`pointer-events-none absolute inset-0 transition-opacity duration-300 ease-in-out ${isHovered ? "opacity-100" : "opacity-0"
-            }`}
-          style={{
-            background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(59, 130, 246, 0.25), transparent 40%)`,
-          }}
+          className={`pointer-events-none absolute inset-0 transition-opacity duration-300 ease-in-out ${isHovered ? "opacity-100" : "opacity-0"}`}
+          style={{ background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(59, 130, 246, 0.25), transparent 40%)` }}
         />
 
         {/* Form Container */}
         <div className="relative z-10 w-full max-w-md rounded-[2.5rem] bg-white p-12 shadow-2xl transition-all duration-500">
-
+          
           {/* STEP 1: ENTER EMAIL */}
           {step === 1 && (
             <>
@@ -296,17 +266,12 @@ const OTPVerification = () => {
                 <p className="text-gray-400 text-sm mt-2 text-center">
                   We sent a 6-digit verification code to <br /> <span className="font-semibold text-gray-700">{email}</span>
                 </p>
-                <button
-                  onClick={() => setStep(1)}
-                  className="text-xs text-blue-600 hover:underline mt-1 font-semibold"
-                >
+                <button onClick={() => setStep(1)} className="text-xs text-blue-600 hover:underline mt-1 font-semibold">
                   Change Email
                 </button>
               </div>
 
               <form onSubmit={handleVerifySubmit} className="space-y-8">
-
-                {/* OTP Input Group */}
                 <div className="flex justify-between gap-2">
                   {otp.map((data, index) => (
                     <input
@@ -331,11 +296,7 @@ const OTPVerification = () => {
                         Resend in {formatTime(timeLeft)}
                       </span>
                     ) : (
-                      <button
-                        type="button"
-                        onClick={handleResendOTP}
-                        className="text-blue-600 font-bold hover:underline ml-1"
-                      >
+                      <button type="button" onClick={handleResendOTP} className="text-blue-600 font-bold hover:underline ml-1">
                         Resend OTP
                       </button>
                     )}
@@ -354,7 +315,6 @@ const OTPVerification = () => {
               </form>
             </>
           )}
-
         </div>
       </div>
     </div>
