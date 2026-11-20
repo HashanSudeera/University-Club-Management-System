@@ -15,16 +15,16 @@ function UserProfile() {
 
   const [formData, setFormData] = useState(initialFormState);
   const [loading, setLoading] = useState(true);
-  const [successMessage, setSuccessMessage] = useState(''); // Modern popup message state eka
+  const [successMessage, setSuccessMessage] = useState(''); // Modern popup message state 
   const [errors, setErrors] = useState({});
 
   // show current data on frontend in database
   useEffect(() => {
     const fetchUserData = async () => {
-      console.log("Auth object:", auth); // 1. auth eke monawada thiyenne balanna
+      console.log("Auth object:", auth); 
 
       const userId = auth?.user?.id || auth?.user?._id;
-      console.log("Extracted userId:", userId); // 2. userId eka allagannawada balanna
+      console.log("Extracted userId:", userId); 
 
       if (!userId) {
         setLoading(false);
@@ -34,11 +34,11 @@ function UserProfile() {
       try {
         console.log(`Fetching from: http://localhost:4000/api/users/profile/${userId}`);
         const response = await axios.get(`http://localhost:4000/api/users/profile/${userId}`);
-        console.log("Response data from backend:", response.data); // 3. data enawada balanna
+        console.log("Response data from backend:", response.data); 
 
         const userData = response.data;
 
-        // Labunu data ape form eke state ekata set karanawa
+        // update form
         setFormData({
           firstName: userData.firstName || '',
           lastName: userData.lastName || '',
@@ -56,7 +56,7 @@ function UserProfile() {
     if (auth) {
       fetchUserData(); // function call
     }
-  }, [auth]);  // auth eka wenas weddi meka nawatha kriyatmaka wei
+  }, [auth]); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,7 +69,7 @@ function UserProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 1. Validation එක: හිස් ෆීල්ඩ්ස් තියෙනවද බලනවා
+    // Validation 
     let newErrors = {};
     if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
     if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
@@ -77,11 +77,10 @@ function UserProfile() {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      return; // ඩේටා හිස් නම් රික්වෙස්ට් එක බේකන්ඩ් එකට යන්න දෙන්නේ නැත
+      return; 
     }
 
-    setErrors({}); // එරර් නැත්නම් ඒවා ක්ලියර් කරමු
-
+    setErrors({}); 
     try {
       const userId = auth?.user?.id || auth?.user?._id;
       if (!userId) {
@@ -113,7 +112,7 @@ function UserProfile() {
 
   const handleClearAll = () => {
     setFormData(initialFormState);
-    setErrors({}); // ක්ලියර් කළාම එරර්ස් ටිකත් නැති කර දමමු
+    setErrors({}); 
   };
 
   return (
