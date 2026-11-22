@@ -1,13 +1,13 @@
-import { useState } from "react"; // Data store and manage
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios"; // Send HTTP requests frontend to backend
-import { Eye, EyeOff } from "lucide-react"; // Imported eye icons
+import axios from "axios";
+import { Eye, EyeOff } from "lucide-react"; 
 import Logo from "/clublink.svg";
-
+import register_img from "../assets/register.jpg";
 
 function Register() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ // From state
+  const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     address: "",
@@ -18,11 +18,15 @@ function Register() {
     role: "Club Member",
   });
 
-  const [error, setError] = useState(null); // Error State
+  const [error, setError] = useState(null);
 
-  // State for toggling password visibility
+  // password visibility
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Spotlight effect states for the right side
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
 
   // HANDLE INPUT CHANGE
   const handleChange = (e) => {
@@ -40,31 +44,39 @@ function Register() {
     });
   };
 
-  // HANDLE SUBMIT
+  // HANDLE SUBMIT using axios
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Stop the page reload
+    e.preventDefault();
     console.log(formData);
     try {
-      await axios.post("http://localhost:4000/api/auth/register", formData, { // Send data to backend
-        withCredentials: true, // Send Cookies credentials requests
+      await axios.post("http://localhost:4000/api/auth/register", formData, {
+        withCredentials: true,
       });
       navigate("/login");
     } catch (err) {
-      // 2. Robust error checking for Axios
       if (err.response && err.response.data && err.response.data.error) {
         setError(err.response.data.error);
       } else if (err.message) {
-        setError(err.message); // Captures network errors (e.g., server down)
+        setError(err.message); 
       } else {
         setError("Something went wrong. Please try again.");
       }
     }
   };
 
+  // TRACK MOUSE POSITION FOR THE GRID SPOTLIGHT
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
   return (
     <div className="min-h-screen flex font-sora relative">
 
-      {/* Club Link Logo - Absolute Top Left */}
+      {/* Club Link Logo */}
       <div className="absolute top-8 left-8 z-50 flex items-center gap-3 drop-shadow-md">
         <Link to="/">
           <div className="flex items-center gap-2 md:gap-3 absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0">
@@ -73,7 +85,6 @@ function Register() {
               <h1 className="text-yellow-500 text-[20px] md:text-[25px] leading-tight font-bold whitespace-nowrap">
                 Club Link
               </h1>
-              {/* Hides the long subtitle on very small screens so it doesn't break */}
               <p className="text-[9px] md:text-[10px] text-blue-100 hidden sm:block leading-none mt-0.5">
                 University Club Management System
               </p>
@@ -83,21 +94,44 @@ function Register() {
       </div>
 
       {/* LEFT SIDE */}
-      <div className="w-1/2 bg-[#021129] text-white flex items-center justify-center relative">
-        <div className="text-center px-10">
-          <span className="bg-yellow-400 text-black px-3 py-1 rounded-full text-sm font-bold">
+      <div className="relative hidden lg:flex w-1/2 items-center justify-center bg-gray-900">
+        <img
+          src={register_img}
+          alt="University life"
+          className="absolute h-full w-full object-cover opacity-40"
+        />
+        <div className="relative z-10 p-12 text-white font-sans">
+          <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-bold">
             CLUB PORTAL
           </span>
-
-          <h1 className="text-[40px] mt-6 font-semibold leading-snug">
-            Your legacy starts <br /> with your club.
+          <h1 className="text-5xl font-bold leading-tight mt-4">
+            Discover • Connect  <br />• Grow
           </h1>
         </div>
       </div>
 
-      {/* RIGHT SIDE */}
-      <div className="w-1/2 flex items-center justify-center bg-gray-200">
-        <div className="bg-white p-8 rounded-2xl shadow-lg w-[400px]">
+      {/* RIGHT SIDE (Interactive Grid Background) */}
+      <div 
+        className="relative w-full lg:w-1/2 flex items-center justify-center bg-blue-800 overflow-hidden"
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {/* CSS Grid Pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:40px_40px]" />
+
+        {/* Hover Spotlight Layer */}
+        <div
+          className={`pointer-events-none absolute inset-0 transition-opacity duration-300 ease-in-out ${
+            isHovered ? "opacity-100" : "opacity-0"
+          }`}
+          style={{
+            background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(59, 130, 246, 0.25), transparent 40%)`,
+          }}
+        />
+
+        {/* Form Container (z-10 keeps it above the background effects) */}
+        <div className="relative z-10 bg-white p-8 rounded-2xl shadow-xl w-[400px]">
 
           <h2 className="text-xl font-semibold text-center mb-4">
             Create An Account
@@ -109,8 +143,8 @@ function Register() {
               type="button"
               onClick={() => handleRoleChange("Club Member")}
               className={`w-1/2 py-2 rounded-full transition ${formData.role === "Club Member"
-                ? "bg-[#021129] text-white"
-                : "text-gray-700"
+                ? "bg-[#021129] text-white shadow-md"
+                : "text-gray-700 hover:bg-gray-200"
                 }`}
             >
               Club Member
@@ -120,8 +154,8 @@ function Register() {
               type="button"
               onClick={() => handleRoleChange("Club Admin")}
               className={`w-1/2 py-2 rounded-full transition ${formData.role === "Club Admin"
-                ? "bg-[#021129] text-white"
-                : "text-gray-700"
+                ? "bg-[#021129] text-white shadow-md"
+                : "text-gray-700 hover:bg-gray-200"
                 }`}
             >
               Club Admin
@@ -137,7 +171,7 @@ function Register() {
               placeholder="First Name"
               value={formData.firstName}
               onChange={handleChange}
-              className="input w-full"
+              className="input w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#021129]"
               required
             />
 
@@ -147,7 +181,7 @@ function Register() {
               placeholder="Last Name"
               value={formData.lastName}
               onChange={handleChange}
-              className="input w-full"
+              className="input w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#021129]"
               required
             />
 
@@ -157,7 +191,7 @@ function Register() {
               placeholder="Address"
               value={formData.address}
               onChange={handleChange}
-              className="input w-full"
+              className="input w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#021129]"
             />
 
             <input
@@ -166,7 +200,7 @@ function Register() {
               placeholder="University Email"
               value={formData.email}
               onChange={handleChange}
-              className="input w-full"
+              className="input w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#021129]"
               required
             />
 
@@ -178,12 +212,12 @@ function Register() {
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
-                className="input w-full pr-10" // Add padding right for icon
+                className="input w-full p-3 pr-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#021129]"
                 required
               />
               <button
                 type="button"
-                className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#021129] transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#021129] transition-colors"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -198,12 +232,12 @@ function Register() {
                 placeholder="Confirm Password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="input w-full pr-10" // Add padding right for icon
+                className="input w-full p-3 pr-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#021129]" 
                 required
               />
               <button
                 type="button"
-                className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#021129] transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#021129] transition-colors"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -214,7 +248,7 @@ function Register() {
               name="academicYear"
               value={formData.academicYear}
               onChange={handleChange}
-              className="input w-full text-gray-600"
+              className="input w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#021129] text-gray-600"
             >
               <option value="" disabled>Select Year</option>
               <option>1st Year</option>
@@ -230,7 +264,7 @@ function Register() {
 
           <p className="text-center text-sm mt-5">
             Already have an account?{" "}
-            <Link to="/login" className="text-yellow-600 font-bold cursor-pointer hover:underline">Login</Link>
+            <Link to="/login" className="text-yellow-700 font-bold cursor-pointer hover:underline">Login</Link>
           </p>
 
           {/* Error Display */}
