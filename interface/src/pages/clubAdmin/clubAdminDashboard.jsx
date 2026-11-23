@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Image as ImageIcon, Calendar as CalendarIcon, Clock, Users, Settings } from 'lucide-react';
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 
 // Import components
@@ -135,12 +135,10 @@ const ClubAdminDashboard = () => {
                       </div>
 
                       <div className="flex items-center gap-2 pt-1">
+                        <Link to='/clubmanage'>
                         <button className="flex-1 bg-[#324861] hover:bg-[#405b7a] text-white text-sm font-semibold py-2.5 px-4 rounded-lg transition-colors text-center shadow-inner">
                           Manage Club
-                        </button>
-                        <button className="bg-[#899bb1] hover:bg-[#a0b0c4] text-[#031428] p-2.5 rounded-lg transition-colors flex items-center justify-center shrink-0 shadow-inner" title="Club Settings">
-                          <Settings size={20} strokeWidth={2.2} />
-                        </button>
+                        </button></Link>
                       </div>
                     </div>
                   </div>

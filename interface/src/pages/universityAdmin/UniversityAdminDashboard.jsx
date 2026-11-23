@@ -23,10 +23,10 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recha
 
 // Dummy data
 const dummyClubData = [
-  { name: 'Art Club', memberCount: 150 },
-  { name: 'Sports Club', memberCount: 120 },
-  { name: 'IT Club', memberCount: 90 },
-  { name: 'Drama Club', memberCount: 40 }
+  { name: 'Art Club', memberCount: 30 },
+  { name: 'Sports Club', memberCount: 20 },
+  { name: 'IT Club', memberCount: 40 },
+  { name: 'Drama Club', memberCount: 10 }
 ];
 
 //Pie chart blue theam colors
@@ -80,7 +80,7 @@ const CustomTooltip = ({ active, payload, coordinate }) => {
         {/* Details */}
         <div className="flex flex-col gap-1 text-xs sm:text-sm">
           <div className="flex justify-between items-center gap-3">
-            <span className="text-gray-500 font-medium">Members:</span>
+            <span className="text-gray-500 font-medium">Clubs:</span>
             <span className="font-bold text-[#004B73]">{data.memberCount}</span>
           </div>
           <div className="flex justify-between items-center gap-3">
@@ -218,7 +218,7 @@ const UniversityAdminDashboard = () => {
               {/* PIE CHART */}
               <div className="bg-blue-50/60 border border-blue-200/80 rounded-2xl p-4 md:p-6 shadow-sm">
                 
-                <h2 className="text-xl md:text-2xl font-bold text-blue-950">Club Members Overwiew</h2>
+                <h2 className="text-xl md:text-2xl font-bold text-blue-950">Club Overwiew</h2>
                 <div className="flex justify-between items-center border-b-2 border-blue-900 mb-6 pb-3"></div>
 
                 <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-24">
@@ -228,7 +228,7 @@ const UniversityAdminDashboard = () => {
                     {/*Center totsl mrmbers*/}
                     <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
                       <span className="text-4xl font-extrabold text-[#004B73]">{totalMembers}</span>
-                      <span className="text-sm text-gray-500 font-medium mt-1">Total Members</span>
+                      <span className="text-sm text-gray-500 font-medium mt-1">Total Clubs</span>
                     </div>
 
                     <ResponsiveContainer width="100%" height="100%">
@@ -386,30 +386,7 @@ const UniversityAdminDashboard = () => {
               </div>
 
               {/* JOINED CLUBS SECTION */}
-              <div className="border-b-2 border-blue-600 mb-6 pb-2 pt-4">
-                <h2 className="text-2xl md:text-3xl font-bold text-blue-600">Joined Clubs</h2>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                {clubs.map((club, index) => (
-                  <Link key={index} to='/club'>
-                    <div className="rounded-xl overflow-hidden shadow-sm flex flex-col bg-white">
-                      <div className="h-40 md:h-48 bg-blue-200 flex items-center justify-center">
-                        <ImageIcon size={56} className="text-blue-300 md:w-16 md:h-16" strokeWidth={1.5} />
-                      </div>
-                      <div className="bg-blue-600 p-4 flex justify-between items-center min-h-[5rem]">
-                        <div className="pr-2">
-                          <h3 className="text-white text-lg font-semibold leading-tight">{club.name}</h3>
-                          <p className="text-blue-100 text-sm md:text-base line-clamp-1">{club.description}</p>
-                        </div>
-                        <span className="bg-yellow-500 text-blue-900 px-4 py-1 rounded text-xs md:text-sm font-semibold shrink-0">
-                          {club.category}
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+              
 
             </div>
           </main>

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'; // add useEffect 
-import Navbar from '../components/Navbar';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext'; // import AuthContext 
+import React, { useState } from 'react';
+import Navbar from '../components/Navbar'; 
+
 
 function UserProfile() {
   const { auth } = useAuth(); // catch data from loged user

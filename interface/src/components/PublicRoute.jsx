@@ -9,7 +9,7 @@ export default function PublicRoute({ children }) {
   }
 
   if (auth && auth.accessToken) {
-    return <Navigate to="/" />; // Redirect to home if already authenticated
+    return <Navigate to="/dashboard" />; // Redirect to home if already authenticated
   }
 
   return children; // Render the public route if not authenticated

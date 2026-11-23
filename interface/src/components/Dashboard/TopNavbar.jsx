@@ -12,10 +12,7 @@ const TopNavbar = ({ onMenuToggle }) => {
   return (
     <header className="h-[64px] md:h-[72px] bg-blue-900 text-white flex items-center justify-between px-4 md:px-6 shrink-0 relative z-30 shadow-md">
       
-      {/* LEFT / CENTER: Logo & Brand Name 
-          - On mobile: Centered perfectly using absolute left-1/2 -translate-x-1/2
-          - On desktop (md:): Resets to normal left-aligned static position 
-      */}
+      {/* Logo & Brand Name */}
       <Link to="/">
       <div className="flex items-center gap-2 md:gap-3 absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0">
         <img src={Logo} alt='Logo' className='w-7 md:w-9 shrink-0' />
@@ -31,16 +28,13 @@ const TopNavbar = ({ onMenuToggle }) => {
       </div>
       </Link>
 
-      {/* RIGHT: Notifications, Profile Badge & 3 Bars Menu */}
       <div className="flex items-center gap-3 md:gap-6 ml-auto">
         
-        {/* Notification Bell (Visible on both mobile & desktop) */}
         <button className="relative p-2 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
           <Bell size={18} className="md:w-5 md:h-5" />
           <span className="absolute top-1 right-1.5 w-2 h-2 bg-error rounded-full"></span>
         </button>
         
-        {/* PROFILE BADGE: Hidden on mobile ('hidden'), visible on tablet/desktop ('md:flex') */}
         <div className="hidden md:flex items-center gap-3 pl-2 border-l border-blue-800/80">
           <div className="text-right">
             <p className="font-bold text-large-body leading-tight">{auth?.user?.firstName || "User"}</p>
