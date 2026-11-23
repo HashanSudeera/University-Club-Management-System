@@ -24,5 +24,8 @@
     "nodemon": "^3.1.14",
     "qrcode": "^1.5.4",
     "validator": "^13.15.26"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }

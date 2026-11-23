@@ -6,7 +6,10 @@ const AnnouncementSchema = new mongoose.Schema(
         type: String,
         unique: true 
     },
-  
+    club_id: {
+       type: String,
+       required: true
+    },
     title: {
       type: String, 
       required: true 

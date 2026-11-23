@@ -19,6 +19,8 @@ import EventCalendar from "./pages/EventCalendar";
 import CreateEvent from "./pages/CreateEvent";
 import ClubRegister from "./pages/ClubRegister";
 import ClubadminRequest from "./pages/universityAdmin/ClubadminRequest";
+import ClubManage from "./pages/ClubManage";
+import ClubMemberManage from "./pages/ClubMemberManage";
 
 function App() {
   return (
@@ -120,6 +122,22 @@ function App() {
             element={
               <PrivateRoute>
                 <ClubExplore />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/clubmanage"
+            element={
+              <PrivateRoute>
+                <ClubManage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/clubmembermanage"
+            element={
+              <PrivateRoute>
+                <ClubMemberManage />
               </PrivateRoute>
             }
           />
