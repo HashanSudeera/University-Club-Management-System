@@ -22,6 +22,7 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
+app.use("/tickets", express.static("tickets"));
 
 //mmiddleware
 app.use((req, res, next) => {
@@ -33,6 +34,8 @@ app.use((req, res, next) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/events",eventRoutes);
 app.use("/api/eventRegisters", eventRegisterRoutes);
+
+app.use("/api/admin", adminRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/clubadmin", clubadminRoutes);
 app.use("/api/clubs", clubRoutes);
