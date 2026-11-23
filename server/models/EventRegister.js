@@ -20,6 +20,9 @@ const EventRegisterSchema = new mongoose.Schema(
     addons: {
       type: mongoose.Schema.Types.Mixed, // Flexible type for various addons.
     },
+        ticket_path: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

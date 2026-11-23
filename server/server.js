@@ -20,6 +20,7 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
+app.use("/tickets", express.static("tickets"));
 
 //mmiddleware
 app.use((req, res, next) => {
@@ -29,14 +30,11 @@ app.use((req, res, next) => {
 
 //ROUTES
 app.use("/api/auth", authRoutes);
-<<<<<<< HEAD
 app.use("/api/events",eventRoutes);
 //app.use("/api/eventRegisters",eventRegisterRoutes);
 app.use("/api/eventRegisters", eventRegisterRoutes);
 
-=======
 app.use("/api/admin", adminRoutes);
->>>>>>> cc3829ff71bc8b88d97ef64836a522efd46c8b5e
 
 //connect Mongo database
 mongoose.connect(MONGO_URL)

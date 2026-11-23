@@ -1,12 +1,18 @@
 import Event from "../models/Event.js";
 import EventRegister from "../models/EventRegister.js";
+import getNextSequence from "../utils/generateId.js";
 
 // Create Event
 export const createEvent = async (req, res) => {
   try {
-    const { date, location, title, poster_path, capacity, status, type } = req.body;
+    const { club_id, date, location, title, poster_path, capacity, status, type } = req.body;
+
+    // Auto-generate event_id using Counter
+    const event_id = await getNextSequence("event_id", "EVT");
 
     const newEvent = new Event({
+      event_id,
+      club_id,
       date,
       location,
       title,
