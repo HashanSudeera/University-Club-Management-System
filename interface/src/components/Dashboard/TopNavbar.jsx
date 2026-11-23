@@ -2,7 +2,6 @@ import React from 'react';
 import { Bell, Menu } from 'lucide-react'; // 1. Imported Menu (3 bars icon)
 import Logo from "/clublink.svg";
 import { useAuth } from "../../context/AuthContext";
-
 import { useNavigate, Link } from "react-router-dom"; 
 
 // Added onMenuToggle prop in case you want to trigger the mobile sidebar!
@@ -37,7 +36,9 @@ const TopNavbar = ({ onMenuToggle }) => {
         
         <div className="hidden md:flex items-center gap-3 pl-2 border-l border-blue-800/80">
           <div className="text-right">
+            <Link to="/userprofile">
             <p className="font-bold text-large-body leading-tight">{auth?.user?.firstName || "User"}</p>
+            </Link>
           {auth?.role === 'Uni Admin' && (  
             <p className="text-regular-body text-blue-200">Uni Admin</p>) || auth?.role === 'Club Admin' && (  
             <p className="text-regular-body text-blue-200">Club Admin</p>) || auth?.role === 'Club Member' && (  
@@ -45,10 +46,12 @@ const TopNavbar = ({ onMenuToggle }) => {
           }
           </div>
           <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 shadow-inner">
+            <Link to="/userprofile">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
               <circle cx="12" cy="7" r="4" />
             </svg>
+            </Link>
           </div>
         </div>
 

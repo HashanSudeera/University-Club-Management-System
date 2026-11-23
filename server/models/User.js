@@ -4,8 +4,8 @@ import getNextSequence from "../utils/generateId.js";
 const userSchema = new mongoose.Schema(
   {
     user_id: {
-      type: String, 
-      unique: true 
+      type: String,
+      unique: true
     },
     firstName: {
       type: String,
@@ -14,6 +14,14 @@ const userSchema = new mongoose.Schema(
     lastName: {
       type: String,
       required: true
+    },
+    phone: {
+      type: String,
+      required: false
+    },
+    universityEmail: {
+      type: String,
+      required: false
     },
     address: {
       type: String,
@@ -31,7 +39,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['Club Member', 'Club Admin','Uni Admin'],
+      enum: ['Club Member', 'Club Admin', 'Uni Admin'],
       default: 'Club Member',
       required: true
     },
