@@ -126,8 +126,9 @@ const EventDetail = () => {
                     </div>
                   </div>
 
-                  {/* Register Button — only for Club Members */}
-                  {auth?.role === 'Club Member' && event.type === 'register' && !registered && (
+                  
+                  {/* Register Button — for Club Members and Club Admins */}
+                     {(auth?.role === 'Club Member' || auth?.role === 'Club Admin') && event.type === 'register' && !registered && (
                     <div className="pt-2">
                       {regError && <p className="text-red-500 text-sm mb-2">{regError}</p>}
                       <button

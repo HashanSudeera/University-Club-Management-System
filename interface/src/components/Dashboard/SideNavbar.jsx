@@ -9,7 +9,8 @@ import {
   Megaphone, 
   PanelLeftClose, 
   PanelLeftOpen,
-  UserCheck
+  UserCheck,
+  Ticket
 } from 'lucide-react';
 
 const SideNavbar = () => {
@@ -94,6 +95,21 @@ const SideNavbar = () => {
           <span className={`text-[10px] md:text-large-body whitespace-nowrap ${!isSidebarOpen && 'md:hidden'}`}>
             <span className="md:hidden">News</span>
             <span className="hidden md:inline">Announcements</span>
+          </span>
+        </NavLink>
+                <NavLink to="/events" className={getLinkClassName}>
+          <Ticket size={20} className="shrink-0" />
+          <span className={`text-[10px] md:text-large-body whitespace-nowrap ${!isSidebarOpen && 'md:hidden'}`}>
+            <span className="md:hidden">Events</span>
+            <span className="hidden md:inline">Events</span>
+          </span>
+        </NavLink>
+
+        <NavLink to="/my-registrations" className={getLinkClassName}>
+          <Ticket size={20} className="shrink-0" />
+          <span className={`text-[10px] md:text-large-body whitespace-nowrap ${!isSidebarOpen && 'md:hidden'}`}>
+            <span className="md:hidden">Passes</span>
+            <span className="hidden md:inline">My Registrations</span>
           </span>
         </NavLink>
         
