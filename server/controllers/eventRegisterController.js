@@ -71,11 +71,27 @@ export const registerForEvent = async (req, res) => {
   }
 };
 
-   // Get all participants registered for an event (Club Admin only)
-   export const getEventParticipants = async (req, res) => {
-    try {
+   // Get all participants registered for an event (Creator Club Admin only)
+export const getEventParticipants = async (req, res) => {
+  try {
     const { eventId } = req.params;
+    const user_id = req.user.id; // Logged-in admin ID
 
+    // 1. Verify event exists
+    const event = await Event.findById(eventId);
+    if (!event) {
+      return res.status(404).json({ success: false, message: "Event not found" });
+    }
+
+    // 2. Strict Check: Only the admin who created this event can view participants
+    if (event.createdBy && event.createdBy.toString() !== user_id) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied. Only the Club Admin who created this event can view participants.",
+      });
+    }
+
+    // 3. Fetch participants
     const participants = await EventRegister.find({ event_id: eventId })
       .populate("user_id", "firstName lastName email academicYear address")
       .sort({ createdAt: -1 });

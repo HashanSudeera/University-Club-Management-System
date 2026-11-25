@@ -28,6 +28,10 @@ const EventSchema = new mongoose.Schema({
   capacity:{ 
       type: Number 
   },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+  },
   participants:[{ 
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User' 
