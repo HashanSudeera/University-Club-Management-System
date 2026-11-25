@@ -11,6 +11,7 @@ import eventRegisterRoutes from "./routes/eventRegisterRoutes.js";
 import adminRoutes from './routes/admin.js';
 import clubadminRoutes from './routes/clubAdmin.js';
 import clubRoutes from "./routes/club.js";
+import { startTicketCleanup } from "./utils/ticketCleanup.js";
 
 const app = express();
 app.use(express.json());
@@ -42,6 +43,7 @@ mongoose.connect(MONGO_URL)
     .then(() => {
         app.listen(PORT, () => {
             console.log(`listeneing on port ${PORT} & DB connected`);
+            startTicketCleanup();
         })
     })
     .catch((error) => {

@@ -7,6 +7,7 @@ export const createEvent = async (req, res) => {
     const { date, location, title, poster_path, capacity, status, type } = req.body;
 
     const newEvent = new Event({
+      createdBy: req.user.id,
       date,
       location,
       title,
