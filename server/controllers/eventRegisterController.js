@@ -70,3 +70,25 @@ export const registerForEvent = async (req, res) => {
     });
   }
 };
+
+   // Get all participants registered for an event (Club Admin only)
+   export const getEventParticipants = async (req, res) => {
+    try {
+    const { eventId } = req.params;
+
+    const participants = await EventRegister.find({ event_id: eventId })
+      .populate("user_id", "firstName lastName email academicYear address")
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      count: participants.length,
+      data: participants,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

@@ -20,6 +20,7 @@ import CreateEvent from "./pages/CreateEvent";
 import EventList from "./pages/EventList";
 import EventDetail from "./pages/EventDetail";
 import MyRegistrations from "./pages/MyRegistrations";
+import EventParticipants from "./pages/EventParticipants";
 import ClubRegister from "./pages/ClubRegister";
 import ClubadminRequest from "./pages/universityAdmin/ClubadminRequest";
 import ClubManage from "./pages/ClubManage";
@@ -116,6 +117,14 @@ function App() {
             element={
               <PrivateRoute>
                 <EventDetail />
+              </PrivateRoute>
+            }
+          />
+           <Route
+            path="/events/:id/participants"
+            element={
+              <PrivateRoute>
+                <EventParticipants />
               </PrivateRoute>
             }
           />

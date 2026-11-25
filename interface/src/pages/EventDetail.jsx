@@ -125,6 +125,19 @@ const EventDetail = () => {
                       <span>{event.participants?.length || 0} / {event.capacity} registered</span>
                     </div>
                   </div>
+                     {/* Club Admin: View Participants Button */}
+
+                      {auth?.role === 'Club Admin' && (
+                      <div className="pt-2 pb-1 border-t border-gray-100 flex justify-end">
+                      <button
+                        onClick={() => navigate(`/events/${id}/participants`)}
+                        className="inline-flex items-center gap-2 bg-blue-50 text-blue-900 border border-blue-200 px-4 py-2 rounded-lg text-xs font-bold hover:bg-blue-100 transition-colors shadow-sm"
+                      >
+                        <Users size={15} />
+                        View Registered Participants ({event.participants?.length || 0})
+                      </button>
+                    </div>
+                  )}
 
                   
                   {/* Register Button — for Club Members and Club Admins */}
